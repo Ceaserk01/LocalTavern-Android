@@ -1,0 +1,11 @@
+{
+  "name": "local-tavern-android",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:bundle": "node scripts/prepare_bundle.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:integration": "node scripts/smoke_server.mjs"
+  }
+}

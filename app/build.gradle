@@ -1,0 +1,52 @@
+plugins { id 'com.android.application' }
+
+def releaseMetadata = new groovy.json.JsonSlurper().parse(rootProject.file('release.json'))
+def signingValues = ['TAVERN_KEYSTORE_FILE', 'TAVERN_KEYSTORE_PASSWORD', 'TAVERN_KEY_ALIAS', 'TAVERN_KEY_PASSWORD']
+def signingProvided = signingValues.count { System.getenv(it) }
+if (signingProvided != 0 && signingProvided != signingValues.size()) {
+    throw new GradleException('Provide all four TAVERN_KEYSTORE_* / TAVERN_KEY_* signing variables, or none for an unsigned build.')
+}
+
+android {
+    namespace 'app.local.tavern'
+    compileSdk 35
+    ndkVersion '27.2.12479018'
+    defaultConfig {
+        applicationId 'app.local.tavern'
+        minSdk 26
+        targetSdk 35
+        versionCode releaseMetadata.versionCode
+        versionName releaseMetadata.version
+        externalNativeBuild { cmake { cppFlags '-std=c++20'; arguments '-DANDROID_STL=c++_shared' } }
+    }
+    externalNativeBuild { cmake { path file('src/main/cpp/CMakeLists.txt'); version '3.22.1' } }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    signingConfigs {
+        if (signingProvided == signingValues.size()) {
+            production {
+                storeFile file(System.getenv('TAVERN_KEYSTORE_FILE'))
+                storePassword System.getenv('TAVERN_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('TAVERN_KEY_ALIAS')
+                keyPassword System.getenv('TAVERN_KEY_PASSWORD')
+                enableV1Signing true
+                enableV2Signing true
+                enableV3Signing true
+            }
+        }
+    }
+    buildTypes {
+        debug { debuggable true }
+        release {
+            minifyEnabled false
+            debuggable false
+            if (signingProvided == signingValues.size()) signingConfig signingConfigs.production
+        }
+    }
+    splits { abi { enable true; reset(); include 'arm64-v8a', 'x86_64'; universalApk false } }
+    androidResources { noCompress 'zip', 'wasm' }
+    packaging { jniLibs { useLegacyPackaging false } }
+    lint { abortOnError true }
+}

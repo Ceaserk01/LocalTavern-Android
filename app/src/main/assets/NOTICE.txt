@@ -1,0 +1,22 @@
+本地酒馆 / Local Tavern Android 0.1.0-alpha.1
+
+Independent Android packaging of SillyTavern. This is not an official SillyTavern release.
+
+SillyTavern 1.19.0
+https://github.com/SillyTavern/SillyTavern
+Revision: 06bde939fb1e9c4c8d8641d810f0a916b5bce127
+License: GNU Affero General Public License version 3 (see SillyTavern-LICENSE.txt).
+The Android wrapper and compatibility changes are supplied under the same license.
+
+Node.js mobile full 24.22.1-0
+https://github.com/fogtape/nodejs-mobile/releases/tag/v24.22.1-0
+Third-party mobile build, upstream Node.js 24.22.1; marked prerelease by its distributor.
+Node.js and bundled components: see Node-LICENSE.txt.
+
+SillyTavern's npm dependencies, their source, license and notices are included in
+the application's tavern.zip asset. Their versions are pinned in package-lock.json.
+No tokenizer, image codec or model backend has been replaced by a stub.
+
+Corresponding source is distributed alongside this APK. Rebuild instructions are
+in README.md, runtime provenance in scripts/prepare_runtime.py and upstream.lock.json.
+Please preserve these notices and include corresponding source when redistributing.

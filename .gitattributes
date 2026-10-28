@@ -1,0 +1,2 @@
+# Preserve upstream license notices byte-for-byte, including their whitespace.
+app/src/main/assets/*LICENSE.txt -whitespace
