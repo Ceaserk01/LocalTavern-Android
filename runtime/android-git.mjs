@@ -10,13 +10,55 @@ export const CheckRepoActions = Object.freeze({ IS_REPO_ROOT: 'root' });
 
 export default function androidGit(options = {}) {
     const dir = typeof options === 'string' ? options : options.baseDir || process.cwd();
-    return new AndroidGit(dir);
+    return new AndroidGit(dir, typeof options === 'object' ? options.timeout?.block : undefined);
 }
 
 class AndroidGit {
-    constructor(dir) {
+    constructor(dir, blockTimeout) {
+        this.blockTimeout = Number.isFinite(blockTimeout) && blockTimeout > 0 ? blockTimeout : 0;
+        this.fetchAllBranches = false;
         this.dir = path.resolve(dir);
         this.options = { fs, dir: this.dir };
+    }
+
+    async network(operation) {
+        if (!this.blockTimeout) return operation(http);
+        const pending = new Set();
+        const transport = {
+            request: async ({ url, method = 'GET', headers = {}, body }) => {
+                const controller = new AbortController();
+                let timer, failure;
+                const cancel = () => { clearTimeout(timer); controller.abort(); pending.delete(cancel); };
+                const touch = () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        failure = new Error(`Git block timeout reached (${this.blockTimeout} ms without network data)`);
+                        controller.abort(failure);
+                    }, this.blockTimeout);
+                };
+                pending.add(cancel); touch();
+                try {
+                    // Native fetch honors abort before headers and throughout the body.
+                    // The vendor Node transport advertises signal but ignores it.
+                    const requestBody = Array.isArray(body) ? Buffer.concat(body) : body;
+                    const response = await fetch(url, { method, headers, body: requestBody,
+                        signal: controller.signal, ...(requestBody ? { duplex: 'half' } : {}) });
+                    touch();
+                    return {
+                        url: response.url, method, statusCode: response.status,
+                        statusMessage: response.statusText, headers: Object.fromEntries(response.headers),
+                        body: (async function* () {
+                            try {
+                                if (response.body) for await (const chunk of response.body) { touch(); yield chunk; }
+                            } catch (error) { throw failure || error; }
+                            finally { cancel(); }
+                        })(),
+                    };
+                } catch (error) { cancel(); throw failure || error; }
+            },
+        };
+        try { return await operation(transport); }
+        finally { for (const cancel of pending) cancel(); }
     }
 
     async checkIsRepo() {
@@ -33,11 +75,14 @@ class AndroidGit {
         if (!Array.isArray(flags)) throw new Error('Unsupported fetch options');
         const unsupported = flags.filter(flag => flag !== '--unshallow');
         if (unsupported.length) throw new Error(`Unsupported fetch option: ${unsupported.join(', ')}`);
-        return git.fetch({
-            ...this.options, http, remote,
-            singleBranch: false,
+        // Version/update checks need only the checked-out branch. The builtin
+        // clone writes a wildcard refspec even for shallow single-branch clones.
+        // Upstream's explicit branch-listing flow calls remote(set-branches, '*').
+        return this.network(transport => git.fetch({
+            ...this.options, http: transport, remote,
+            singleBranch: !this.fetchAllBranches,
             ...(flags.includes('--unshallow') ? { depth: 2147483647 } : {}),
-        });
+        }));
     }
 
     async revparse(args) {
@@ -103,6 +148,7 @@ class AndroidGit {
         }
         const remote = args[1];
         await git.setConfig({ ...this.options, path: `remote.${remote}.fetch`, value: `+refs/heads/*:refs/remotes/${remote}/*` });
+        this.fetchAllBranches = true;
     }
 
     async checkout(branch) {
@@ -127,6 +173,6 @@ class AndroidGit {
     async pull(remote = 'origin', branch) {
         // Extensions have no author identity configured. A fast-forward update
         // preserves local edits and fails safely when histories diverge.
-        return git.fastForward({ ...this.options, http, remote, ref: branch, singleBranch: true });
+        return this.network(transport => git.fastForward({ ...this.options, http: transport, remote, ref: branch, singleBranch: true }));
     }
 }
