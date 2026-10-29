@@ -1,0 +1,866 @@
+[
+  {
+    "case": "slirp_nodelay_small",
+    "round": 0,
+    "n": 100,
+    "headersAt": 538,
+    "firstAt": 538,
+    "lagP50": 200,
+    "lagP95": 452,
+    "totalMs": 629,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:00 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "516.736ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 538,
+        "bytes": 1137
+      },
+      {
+        "after": 539,
+        "bytes": 2979
+      },
+      {
+        "after": 542,
+        "bytes": 49
+      },
+      {
+        "after": 546,
+        "bytes": 49
+      },
+      {
+        "after": 551,
+        "bytes": 49
+      },
+      {
+        "after": 557,
+        "bytes": 49
+      },
+      {
+        "after": 562,
+        "bytes": 49
+      },
+      {
+        "after": 568,
+        "bytes": 49
+      },
+      {
+        "after": 573,
+        "bytes": 49
+      },
+      {
+        "after": 578,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 19
+  },
+  {
+    "case": "slirp_nodelay_small",
+    "round": 1,
+    "n": 100,
+    "headersAt": 522,
+    "firstAt": 523,
+    "lagP50": 208,
+    "lagP95": 461,
+    "totalMs": 600,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:01 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "515.511ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 523,
+        "bytes": 2421
+      },
+      {
+        "after": 524,
+        "bytes": 1793
+      },
+      {
+        "after": 530,
+        "bytes": 49
+      },
+      {
+        "after": 532,
+        "bytes": 49
+      },
+      {
+        "after": 536,
+        "bytes": 49
+      },
+      {
+        "after": 541,
+        "bytes": 49
+      },
+      {
+        "after": 547,
+        "bytes": 49
+      },
+      {
+        "after": 553,
+        "bytes": 49
+      },
+      {
+        "after": 557,
+        "bytes": 49
+      },
+      {
+        "after": 562,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 17
+  },
+  {
+    "case": "slirp_nodelay_small",
+    "round": 2,
+    "n": 100,
+    "headersAt": 517,
+    "firstAt": 517,
+    "lagP50": 201,
+    "lagP95": 459,
+    "totalMs": 599,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:01 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "508.306ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 517,
+        "bytes": 1137
+      },
+      {
+        "after": 519,
+        "bytes": 3028
+      },
+      {
+        "after": 521,
+        "bytes": 49
+      },
+      {
+        "after": 524,
+        "bytes": 49
+      },
+      {
+        "after": 528,
+        "bytes": 49
+      },
+      {
+        "after": 535,
+        "bytes": 49
+      },
+      {
+        "after": 540,
+        "bytes": 49
+      },
+      {
+        "after": 544,
+        "bytes": 49
+      },
+      {
+        "after": 549,
+        "bytes": 49
+      },
+      {
+        "after": 554,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 18
+  },
+  {
+    "case": "reverse_nodelay_small",
+    "round": 0,
+    "n": 100,
+    "headersAt": 33,
+    "firstAt": 34,
+    "lagP50": 2,
+    "lagP95": 2,
+    "totalMs": 583,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:01 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "29.689ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 34,
+        "bytes": 49
+      },
+      {
+        "after": 38,
+        "bytes": 49
+      },
+      {
+        "after": 43,
+        "bytes": 49
+      },
+      {
+        "after": 49,
+        "bytes": 49
+      },
+      {
+        "after": 55,
+        "bytes": 49
+      },
+      {
+        "after": 59,
+        "bytes": 49
+      },
+      {
+        "after": 65,
+        "bytes": 49
+      },
+      {
+        "after": 71,
+        "bytes": 49
+      },
+      {
+        "after": 77,
+        "bytes": 49
+      },
+      {
+        "after": 82,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 101
+  },
+  {
+    "case": "reverse_nodelay_small",
+    "round": 1,
+    "n": 100,
+    "headersAt": 31,
+    "firstAt": 32,
+    "lagP50": 2,
+    "lagP95": 3,
+    "totalMs": 576,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:02 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "26.721ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 32,
+        "bytes": 49
+      },
+      {
+        "after": 36,
+        "bytes": 49
+      },
+      {
+        "after": 41,
+        "bytes": 49
+      },
+      {
+        "after": 47,
+        "bytes": 49
+      },
+      {
+        "after": 53,
+        "bytes": 49
+      },
+      {
+        "after": 58,
+        "bytes": 49
+      },
+      {
+        "after": 63,
+        "bytes": 49
+      },
+      {
+        "after": 69,
+        "bytes": 49
+      },
+      {
+        "after": 74,
+        "bytes": 49
+      },
+      {
+        "after": 81,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 101
+  },
+  {
+    "case": "reverse_nodelay_small",
+    "round": 2,
+    "n": 100,
+    "headersAt": 30,
+    "firstAt": 30,
+    "lagP50": 2,
+    "lagP95": 2,
+    "totalMs": 571,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:03 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "26.159ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 30,
+        "bytes": 49
+      },
+      {
+        "after": 34,
+        "bytes": 49
+      },
+      {
+        "after": 39,
+        "bytes": 49
+      },
+      {
+        "after": 45,
+        "bytes": 49
+      },
+      {
+        "after": 50,
+        "bytes": 49
+      },
+      {
+        "after": 55,
+        "bytes": 49
+      },
+      {
+        "after": 61,
+        "bytes": 49
+      },
+      {
+        "after": 65,
+        "bytes": 49
+      },
+      {
+        "after": 70,
+        "bytes": 49
+      },
+      {
+        "after": 76,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 101
+  },
+  {
+    "case": "slirp_nagle_small",
+    "round": 0,
+    "n": 100,
+    "headersAt": 513,
+    "firstAt": 513,
+    "lagP50": 203,
+    "lagP95": 456,
+    "totalMs": 596,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:04 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "507.495ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 513,
+        "bytes": 2421
+      },
+      {
+        "after": 515,
+        "bytes": 1793
+      },
+      {
+        "after": 520,
+        "bytes": 49
+      },
+      {
+        "after": 523,
+        "bytes": 49
+      },
+      {
+        "after": 527,
+        "bytes": 49
+      },
+      {
+        "after": 533,
+        "bytes": 49
+      },
+      {
+        "after": 539,
+        "bytes": 49
+      },
+      {
+        "after": 545,
+        "bytes": 49
+      },
+      {
+        "after": 549,
+        "bytes": 49
+      },
+      {
+        "after": 555,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 17
+  },
+  {
+    "case": "slirp_nagle_small",
+    "round": 1,
+    "n": 100,
+    "headersAt": 517,
+    "firstAt": 517,
+    "lagP50": 204,
+    "lagP95": 458,
+    "totalMs": 597,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:04 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "507.308ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 517,
+        "bytes": 2421
+      },
+      {
+        "after": 519,
+        "bytes": 1793
+      },
+      {
+        "after": 522,
+        "bytes": 49
+      },
+      {
+        "after": 526,
+        "bytes": 49
+      },
+      {
+        "after": 532,
+        "bytes": 49
+      },
+      {
+        "after": 536,
+        "bytes": 49
+      },
+      {
+        "after": 542,
+        "bytes": 49
+      },
+      {
+        "after": 548,
+        "bytes": 49
+      },
+      {
+        "after": 553,
+        "bytes": 49
+      },
+      {
+        "after": 559,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 17
+  },
+  {
+    "case": "slirp_nagle_small",
+    "round": 2,
+    "n": 100,
+    "headersAt": 516,
+    "firstAt": 516,
+    "lagP50": 203,
+    "lagP95": 458,
+    "totalMs": 597,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:05 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "509.750ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 516,
+        "bytes": 2421
+      },
+      {
+        "after": 518,
+        "bytes": 1744
+      },
+      {
+        "after": 520,
+        "bytes": 49
+      },
+      {
+        "after": 523,
+        "bytes": 49
+      },
+      {
+        "after": 528,
+        "bytes": 49
+      },
+      {
+        "after": 532,
+        "bytes": 49
+      },
+      {
+        "after": 537,
+        "bytes": 49
+      },
+      {
+        "after": 543,
+        "bytes": 49
+      },
+      {
+        "after": 549,
+        "bytes": 49
+      },
+      {
+        "after": 554,
+        "bytes": 49
+      }
+    ],
+    "chunkCount": 18
+  },
+  {
+    "case": "slirp_nodelay_1k",
+    "round": 0,
+    "n": 100,
+    "headersAt": 515,
+    "firstAt": 515,
+    "lagP50": 231,
+    "lagP95": 457,
+    "totalMs": 601,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:05 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "506.982ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 515,
+        "bytes": 8425
+      },
+      {
+        "after": 518,
+        "bytes": 2859
+      },
+      {
+        "after": 522,
+        "bytes": 4292
+      },
+      {
+        "after": 524,
+        "bytes": 4292
+      },
+      {
+        "after": 527,
+        "bytes": 2859
+      },
+      {
+        "after": 530,
+        "bytes": 4292
+      },
+      {
+        "after": 535,
+        "bytes": 10017
+      },
+      {
+        "after": 539,
+        "bytes": 8584
+      },
+      {
+        "after": 542,
+        "bytes": 2859
+      },
+      {
+        "after": 546,
+        "bytes": 7158
+      }
+    ],
+    "chunkCount": 25
+  },
+  {
+    "case": "slirp_nodelay_1k",
+    "round": 1,
+    "n": 100,
+    "headersAt": 511,
+    "firstAt": 511,
+    "lagP50": 241,
+    "lagP95": 462,
+    "totalMs": 586,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:06 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "505.022ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 511,
+        "bytes": 1267
+      },
+      {
+        "after": 518,
+        "bytes": 7158
+      },
+      {
+        "after": 521,
+        "bytes": 4292
+      },
+      {
+        "after": 524,
+        "bytes": 2859
+      },
+      {
+        "after": 527,
+        "bytes": 4292
+      },
+      {
+        "after": 532,
+        "bytes": 5725
+      },
+      {
+        "after": 534,
+        "bytes": 2859
+      },
+      {
+        "after": 537,
+        "bytes": 4292
+      },
+      {
+        "after": 541,
+        "bytes": 7151
+      },
+      {
+        "after": 543,
+        "bytes": 2866
+      }
+    ],
+    "chunkCount": 23
+  },
+  {
+    "case": "slirp_nodelay_1k",
+    "round": 2,
+    "n": 100,
+    "headersAt": 508,
+    "firstAt": 508,
+    "lagP50": 224,
+    "lagP95": 460,
+    "totalMs": 591,
+    "responseHeaders": {
+      "connection": "keep-alive",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "date": "Wed, 28 Oct 2026 16:53:07 GMT",
+      "keep-alive": "timeout=5",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "transfer-encoding": "chunked",
+      "vary": "Origin",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-response-time": "503.908ms",
+      "x-xss-protection": "0"
+    },
+    "chunks": [
+      {
+        "after": 508,
+        "bytes": 2700
+      },
+      {
+        "after": 511,
+        "bytes": 2859
+      },
+      {
+        "after": 514,
+        "bytes": 2866
+      },
+      {
+        "after": 517,
+        "bytes": 4292
+      },
+      {
+        "after": 518,
+        "bytes": 4292
+      },
+      {
+        "after": 520,
+        "bytes": 2859
+      },
+      {
+        "after": 523,
+        "bytes": 7151
+      },
+      {
+        "after": 526,
+        "bytes": 7158
+      },
+      {
+        "after": 527,
+        "bytes": 2859
+      },
+      {
+        "after": 530,
+        "bytes": 2859
+      }
+    ],
+    "chunkCount": 24
+  }
+]

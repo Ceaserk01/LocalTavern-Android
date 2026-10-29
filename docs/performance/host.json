@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "completed": true,
+  "fixture": "ltbench_b1e426891f2645c6",
+  "target": "http://127.0.0.1:56401",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M1"
+  },
+  "scope": "HTTP backend timings observed by the host driver, including response reads and client JSON parsing; not WebView rendering or real-device/model inference performance.",
+  "counts": {
+    "cards": 100,
+    "chatMessages": 5000,
+    "chatRounds": 5,
+    "discoveryRounds": 10,
+    "tokenizerRounds": 20,
+    "streamRounds": 5,
+    "streamEventsPerRound": 100,
+    "mockIntervalMs": 5,
+    "mockInitialDelayMs": 20
+  },
+  "measurements": {
+    "characterImport": {
+      "samples": 100,
+      "minMs": 16.89,
+      "p50Ms": 24.55,
+      "p95Ms": 39.29,
+      "maxMs": 89.44,
+      "totalMs": 2679.37,
+      "cards": 100,
+      "totalJsonBytes": 330700,
+      "operation": "Sequential JSON imports including actual PNG/WASM conversion, disk persistence and HTTP response"
+    },
+    "characterDiscovery": {
+      "samples": 10,
+      "minMs": 22.19,
+      "p50Ms": 31.82,
+      "p95Ms": 298.29,
+      "maxMs": 298.29,
+      "totalMs": 611.87,
+      "fixtureCards": 100,
+      "totalCards": 101,
+      "responseBytes": 1355034,
+      "fullCharacterMetadata": true
+    },
+    "longChatSave": {
+      "samples": 5,
+      "minMs": 36.89,
+      "p50Ms": 38.99,
+      "p95Ms": 100.97,
+      "maxMs": 100.97,
+      "totalMs": 260.78,
+      "messagesPerChat": 5000,
+      "requestBytes": 2254153
+    },
+    "longChatLoad": {
+      "samples": 5,
+      "minMs": 39.47,
+      "p50Ms": 47.89,
+      "p95Ms": 456.78,
+      "maxMs": 456.78,
+      "totalMs": 646.07,
+      "messagesPerChat": 5000,
+      "responseBytes": 2254034
+    },
+    "tokenizerEncode": {
+      "samples": 20,
+      "minMs": 10.85,
+      "p50Ms": 11.56,
+      "p95Ms": 19.45,
+      "maxMs": 21.37,
+      "totalMs": 252.66,
+      "firstEncodeMs": 125.41,
+      "inputUtf8Bytes": 36400,
+      "tokenCount": 8000,
+      "firstEncodeScope": "First encode observed by this run; may already be initialized on an external target"
+    },
+    "streamingFirstEvent": {
+      "samples": 5,
+      "minMs": 25.06,
+      "p50Ms": 28.79,
+      "p95Ms": 32.94,
+      "maxMs": 32.94,
+      "totalMs": 146.19,
+      "mockInitialDelayMs": 20
+    },
+    "streamingForwardLag": {
+      "samples": 500,
+      "minMs": 0.14,
+      "p50Ms": 0.35,
+      "p95Ms": 1.28,
+      "maxMs": 10.73,
+      "totalMs": 275.18,
+      "eventsVerified": 500,
+      "totalResponseBytes": 48970,
+      "measurement": "Host mock write to host driver receive through the actual server proxy; same monotonic clock, no real model/network inference"
+    },
+    "streamingCompletion": {
+      "samples": 5,
+      "minMs": 594.27,
+      "p50Ms": 601.38,
+      "p95Ms": 613.23,
+      "maxMs": 613.23,
+      "totalMs": 3008.65,
+      "mockIntervalMs": 5,
+      "incrementalDeliveryVerified": true
+    }
+  },
+  "cleanup": {
+    "charactersDeleted": 100,
+    "backupsDeleted": 5,
+    "errors": []
+  },
+  "readinessWaitMs": 1808.86,
+  "readinessScope": "Fresh private userdata and host Node process using the packaged source; excludes APK extraction and WebView.",
+  "baselineCharacterCount": 1,
+  "totalDurationMs": 9896.16
+}

@@ -1,0 +1,56 @@
+{
+  "phase": "complete",
+  "fixtures": {
+    "oldHash": "f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0",
+    "staging": ".install-cf0bd0f9-d9fe-42f8-9d9f-24a5f280e9e0",
+    "uid": 10208,
+    "currentHash": "2bfd5d4a09e02bb61632d13337b0f46e36f9cc6a25d51c6b192de009db43aab6",
+    "pidBefore": "3527"
+  },
+  "backup": {
+    "passed": true,
+    "size": 16128964,
+    "entries": 265,
+    "marker": "before",
+    "gracefulExitMarker": "graceful",
+    "chatPath": "userdata/default-user/chats/Android Smoke Test/smoke-chat.jsonl",
+    "chatSha256": "ff892551a8e37255298bdf5c12fa00fa700417519f0d4bee2e36cac73c6a82c0",
+    "pidAfter": "4456"
+  },
+  "cleanup": {
+    "passed": true,
+    "checks": {
+      "oldVersionRemoved": true,
+      "interruptedStageRemoved": true,
+      "temporaryZipRemoved": true,
+      "unownedFilePreserved": true,
+      "currentReadyPreserved": true,
+      "dataTargetPreserved": true
+    },
+    "initialPid": "3527",
+    "pidAfter": "4456",
+    "fixtureContextNote": "Symlink created by root initially had default SELinux label; corrected with chcon -h to app data label before verifying successful cleanup."
+  },
+  "restore": {
+    "passed": true,
+    "marker": "before",
+    "chatSha256": "ff892551a8e37255298bdf5c12fa00fa700417519f0d4bee2e36cac73c6a82c0",
+    "chatMatchesBackup": true,
+    "pluginApi": {
+      "nativeQA": true
+    },
+    "pidAfter": "4693",
+    "mutationsAppliedBeforeRestore": [
+      "marker overwritten with after using successful fixture command",
+      "extra chat JSONL entry appended using successful fixture command"
+    ]
+  },
+  "passed": true,
+  "device": "Android35 ARM64 emulator-5554",
+  "uiActions": [
+    "Chinese onboarding confirmed",
+    "Native restart through menu",
+    "Backup via DocumentsUI SAVE",
+    "Restore via DocumentsUI selection"
+  ]
+}

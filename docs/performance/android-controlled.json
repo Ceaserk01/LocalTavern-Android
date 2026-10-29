@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "completed": true,
+  "fixture": "ltbench_c52010a5053c4a89",
+  "target": "http://127.0.0.1:18768",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M1"
+  },
+  "scope": "HTTP backend timings observed by the host driver, including response reads and client JSON parsing; not WebView rendering or real-device/model inference performance.",
+  "counts": {
+    "cards": 100,
+    "chatMessages": 5000,
+    "chatRounds": 5,
+    "discoveryRounds": 10,
+    "tokenizerRounds": 20,
+    "streamRounds": 5,
+    "streamEventsPerRound": 100,
+    "mockIntervalMs": 5,
+    "mockInitialDelayMs": 20
+  },
+  "measurements": {
+    "characterImport": {
+      "samples": 100,
+      "minMs": 17.11,
+      "p50Ms": 22.38,
+      "p95Ms": 35.77,
+      "maxMs": 44.05,
+      "totalMs": 2416.55,
+      "cards": 100,
+      "totalJsonBytes": 330700,
+      "operation": "Sequential JSON imports including actual PNG/WASM conversion, disk persistence and HTTP response"
+    },
+    "characterDiscovery": {
+      "samples": 10,
+      "minMs": 25.62,
+      "p50Ms": 27.86,
+      "p95Ms": 938.46,
+      "maxMs": 938.46,
+      "totalMs": 1205.32,
+      "fixtureCards": 100,
+      "totalCards": 102,
+      "responseBytes": 1356581,
+      "fullCharacterMetadata": true
+    },
+    "longChatSave": {
+      "samples": 5,
+      "minMs": 42.44,
+      "p50Ms": 49.36,
+      "p95Ms": 52.43,
+      "maxMs": 52.43,
+      "totalMs": 241.74,
+      "messagesPerChat": 5000,
+      "requestBytes": 2254153
+    },
+    "longChatLoad": {
+      "samples": 5,
+      "minMs": 41.81,
+      "p50Ms": 44.36,
+      "p95Ms": 50.6,
+      "maxMs": 50.6,
+      "totalMs": 229.14,
+      "messagesPerChat": 5000,
+      "responseBytes": 2254034
+    },
+    "tokenizerEncode": {
+      "samples": 20,
+      "minMs": 16.32,
+      "p50Ms": 17.22,
+      "p95Ms": 21.28,
+      "maxMs": 22.4,
+      "totalMs": 362.83,
+      "firstEncodeMs": 23.17,
+      "inputUtf8Bytes": 36400,
+      "tokenCount": 8000,
+      "firstEncodeScope": "First encode observed by this run; may already be initialized on an external target"
+    },
+    "streamingFirstEvent": {
+      "samples": 5,
+      "minMs": 28.62,
+      "p50Ms": 31.07,
+      "p95Ms": 36.48,
+      "maxMs": 36.48,
+      "totalMs": 159.35,
+      "mockInitialDelayMs": 20
+    },
+    "streamingForwardLag": {
+      "samples": 500,
+      "minMs": 1.15,
+      "p50Ms": 1.82,
+      "p95Ms": 2.47,
+      "maxMs": 4.36,
+      "totalMs": 935.07,
+      "eventsVerified": 500,
+      "totalResponseBytes": 48970,
+      "measurement": "Host mock write to host driver receive through the actual server proxy; same monotonic clock, no real model/network inference"
+    },
+    "streamingCompletion": {
+      "samples": 5,
+      "minMs": 560.53,
+      "p50Ms": 570.48,
+      "p95Ms": 573.52,
+      "maxMs": 573.52,
+      "totalMs": 2840.04,
+      "mockIntervalMs": 5,
+      "incrementalDeliveryVerified": true
+    }
+  },
+  "cleanup": {
+    "charactersDeleted": 100,
+    "backupsDeleted": 5,
+    "errors": [],
+    "reverseMappingRemoved": true
+  },
+  "streamingTransport": {
+    "type": "adbReverse",
+    "modelHost": "127.0.0.1",
+    "deviceSerial": "emulator-5554",
+    "note": "Transport is part of the measurement. ADB reverse avoids the emulator SLIRP bridge; it does not simulate physical Wi-Fi or remote model latency."
+  },
+  "readinessWaitMs": 24.41,
+  "readinessScope": "Availability polling only; the script did not start or time the Android app.",
+  "baselineCharacterCount": 2,
+  "totalDurationMs": 8023.03
+}

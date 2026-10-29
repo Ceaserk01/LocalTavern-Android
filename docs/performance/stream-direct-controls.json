@@ -1,0 +1,84 @@
+[
+  {
+    "host": "10.0.2.2",
+    "round": 0,
+    "events": 100,
+    "requestToHostMs": 25,
+    "firstByteMs": 527,
+    "firstEventMs": 527,
+    "p50Lag": 190,
+    "p95Lag": 448,
+    "chunkCount": 18,
+    "chunks": [
+      {
+        "ms": 527,
+        "bytes": 1386
+      },
+      {
+        "ms": 531,
+        "bytes": 15
+      },
+      {
+        "ms": 535,
+        "bytes": 15
+      },
+      {
+        "ms": 541,
+        "bytes": 15
+      },
+      {
+        "ms": 545,
+        "bytes": 15
+      },
+      {
+        "ms": 551,
+        "bytes": 15
+      },
+      {
+        "ms": 556,
+        "bytes": 15
+      }
+    ]
+  },
+  {
+    "host": "127.0.0.1",
+    "round": 0,
+    "events": 100,
+    "requestToHostMs": 34,
+    "firstByteMs": 36,
+    "firstEventMs": 58,
+    "p50Lag": 2,
+    "p95Lag": 2,
+    "chunkCount": 102,
+    "chunks": [
+      {
+        "ms": 36,
+        "bytes": 136
+      },
+      {
+        "ms": 58,
+        "bytes": 14
+      },
+      {
+        "ms": 63,
+        "bytes": 14
+      },
+      {
+        "ms": 68,
+        "bytes": 14
+      },
+      {
+        "ms": 73,
+        "bytes": 14
+      },
+      {
+        "ms": 78,
+        "bytes": 14
+      },
+      {
+        "ms": 83,
+        "bytes": 14
+      }
+    ]
+  }
+]

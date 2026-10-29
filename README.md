@@ -48,6 +48,15 @@
 
 本版未引入 Rust。保留完整 JavaScript 扩展环境比重写接口更重要；目前没有实机基准足以证明 Rust 重写会改善聊天体验。
 
+[性能方法与原始结果](docs/performance/README.md) 已公开，包括 100 张角色卡、5,000 条消息、真实 tokenizer 和 500 个流式事件的测试，以及模拟器网络路径的对照实验。
+
+<details>
+<summary>Android 35 模拟器界面预览</summary>
+
+<img src="docs/images/android-preview.png" alt="本地酒馆安卓中文界面" width="360">
+
+</details>
+
 ## 构建
 
 需要 JDK 17、Android SDK Platform 35 / Build Tools 35.0.0、NDK 27.2.12479018、CMake 3.22.1、Node.js 20 以上、npm、Python 3、Git。Gradle Wrapper 固定 8.11.1 并校验发行包 SHA-256。可使用 Android Studio 安装 SDK 组件。

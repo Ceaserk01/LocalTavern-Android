@@ -1,0 +1,54 @@
+# 性能验证范围与原始结果
+
+2026-10-29，版本 0.1.0-alpha.1。主机为 Apple M1；安卓目标为 Android 35 ARM64、4 GB 内存模拟器，App 内嵌 Node.js v24.22.1。测试驱动运行于主机 Node.js v22.23.1，安卓 HTTP 请求经过 ADB 转发。
+
+这些是实际后端操作耗时，包含 HTTP 数据读取和测试驱动 JSON 解析，不是 WebView 绘制、实体手机、Wi-Fi 或远程模型推理的性能承诺。原始文件明确区分驱动与测试目标。
+
+| 工作负载 | M1 主机 p50 | 安卓受控运行 p50 | 安卓受控运行 p95 |
+| --- | ---: | ---: | ---: |
+| 角色卡 JSON → PNG/WASM 导入，100 次 | 24.55 ms | 22.38 ms | 35.77 ms |
+| 100 张测试卡完整元数据发现，10 次 | 31.82 ms | 27.86 ms | 938.46 ms |
+| 5,000 条消息 / 约 2.25 MB 保存，5 次 | 38.99 ms | 49.36 ms | 52.43 ms |
+| 同规模聊天读取，5 次 | 47.89 ms | 44.36 ms | 50.60 ms |
+| 36.4 KB 文本 / 8,000 token 编码，20 次 | 11.56 ms | 17.22 ms | 21.28 ms |
+| 模拟流式事件转发，500 个事件 | 0.35 ms | 1.82 ms | 2.47 ms |
+
+首次角色发现的冷缓存耗时明显高于后续请求，表格保留 p95，未隐藏这一差异。不同轮次的缓存、JIT 和主机负载不同，不能从这些数据宣称某平台比另一平台更快。聊天样本仅 5 次，p95 在此对应最高样本，应结合原始数据判断。
+
+## 排除模拟器网络缓冲干扰
+
+初次安卓运行经 `10.0.2.2` 访问主机模型，首个流式事件约 514 ms，小事件会成批送达。为定位原因进行了两类对照：
+
+1. 同一签名 APK、同一 100 事件模拟模型，仅把模型路径切换为 ADB reverse：首事件约 30–34 ms，包含模型刻意等待的 20 ms。
+2. 用 Android 的 `toybox nc` 直接访问相同模拟模型，绕过 Node/Express/应用：`10.0.2.2` 路径仍延迟约 527 ms，ADB reverse 的首字节约 36 ms。
+
+这证明本次约半秒缓冲来自模拟器 SLIRP 路径。未据此更改应用的流式转发逻辑。ADB reverse 控制实验也不模拟实体手机 Wi-Fi 或远程 API 延迟。
+
+原始记录：
+
+- [主机完整基线](host.json)
+- [安卓初次 SLIRP 运行](android-slirp.json)
+- [安卓 ADB reverse 受控运行](android-controlled.json)
+- [同一应用的网络路径对照](stream-route-controls.json)
+- [绕过应用的独立网络对照](stream-direct-controls.json)
+- [签名版原生备份恢复与资源清理](release-native-qa.json)
+
+## 复现
+
+先按构建说明准备 `.cache/bundle`，然后：
+
+```sh
+npm run benchmark
+```
+
+在测试模拟器安装并打开 APK，设置好 `ANDROID_HOME`，运行：
+
+```sh
+"$ANDROID_HOME/platform-tools/adb" -s emulator-5554 forward tcp:18768 tcp:18766
+TAVERN_TEST_URL=http://127.0.0.1:18768 \
+TAVERN_BENCH_ADB_SERIAL=emulator-5554 \
+TAVERN_BENCH_ADB_PATH="$ANDROID_HOME/platform-tools/adb" \
+npm run benchmark
+```
+
+基准会导入随机唯一前缀的 100 张测试卡、创建测试聊天和备份，完成后仅删除自身创建的资料。模拟 API 使用固定假密码覆盖目标设置中的真实密钥；不发送真实账号密钥。ADB reverse 是显式选择，会拒绝覆盖已有映射，并在结束后清理自己的映射。请使用专门测试实例；进程被强制结束时，任何测试工具都可能留下尚未清理的测试资料。
