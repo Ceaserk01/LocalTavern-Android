@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-29T09:21:05.455Z",
+  "device": "Android 35 arm64 emulator-5554",
+  "buildType": "debug",
+  "version": "0.1.0-alpha.2",
+  "versionCode": 3,
+  "fixture": {
+    "nonce": "alpha2-lifecycle-1793265665455",
+    "draft": "unsent lifecycle QA draft",
+    "characterId": "0",
+    "chatId": "Lifecycle QA - 2026-10-29@17h20m33s624ms",
+    "chatLength": 1
+  },
+  "mainPidBefore": 7322,
+  "runtimePidBefore": 7486,
+  "mainPidAfterKill": 7322,
+  "runtimePidAfterKill": null,
+  "serverUnavailableAfterKill": true,
+  "recoveryObservedMs": 6245,
+  "mainPidAfterRecovery": 7322,
+  "runtimePidAfterRecovery": 7544,
+  "documentAfterRecovery": {
+    "noncePreserved": true,
+    "draftPreserved": true,
+    "characterPreserved": true,
+    "chatPreserved": true,
+    "chatId": "Lifecycle QA - 2026-10-29@17h20m33s624ms",
+    "csrfTokenPreserved": true,
+    "existingSessionPingStatus": 204
+  },
+  "healthyResumes": [
+    {
+      "mainPid": 7322,
+      "runtimePid": 7544,
+      "noncePreserved": true,
+      "draftPreserved": true,
+      "chatPreserved": true
+    },
+    {
+      "mainPid": 7322,
+      "runtimePid": 7544,
+      "noncePreserved": true,
+      "draftPreserved": true,
+      "chatPreserved": true
+    }
+  ],
+  "passed": true
+}

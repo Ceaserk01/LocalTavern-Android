@@ -28,10 +28,13 @@ public final class MainActivity extends Activity {
     private ProgressBar progress;
     private ValueCallback<Uri[]> upload;
     private PermissionRequest microphone;
-    private boolean ready, polling, closing, busy;
+    private boolean ready, closing, busy, runtimeStarting, runtimeChecking, resumed;
+    private int runtimeGeneration;
+    private final Runnable resumeRuntimeCheck = this::checkRuntimeOnResume;
     private String downloadUrl, downloadAgent, blobKey;
     private OutputStream downloadStream;
     private long blobOffset;
+    private volatile int downloadGeneration;
     private long requestedStartMillis;
 
     @Override public void onCreate(Bundle saved) {
@@ -81,7 +84,10 @@ public final class MainActivity extends Activity {
                 }
                 return true;
             }
-            @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon) { progress.setVisibility(View.VISIBLE); }
+            @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon) {
+                if (blobKey!=null && !url.startsWith("blob:")) clearDownload();
+                progress.setVisibility(View.VISIBLE);
+            }
             @Override public void onPageFinished(WebView view,String url) { progress.setVisibility(View.GONE); CookieManager.getInstance().flush(); }
             @Override public void onReceivedError(WebView view,WebResourceRequest request,WebResourceError e) {
                 if (request.isForMainFrame()) { ready=false; web.setVisibility(View.GONE); boot.setVisibility(View.VISIBLE); status.setText("本地页面暂时不可用。请查看日志或重启服务。"); progress.setVisibility(View.GONE); }
@@ -92,11 +98,15 @@ public final class MainActivity extends Activity {
             @Override public boolean onCreateWindow(WebView view,boolean dialog,boolean gesture,Message result) {
                 if(!gesture) return false;
                 WebView popup=new WebView(MainActivity.this);
+                popup.setDownloadListener((url,agent,disposition,mime,length)->{
+                    handleDownload(url,agent,disposition,mime);popup.stopLoading();popup.destroy();
+                });
                 popup.setWebViewClient(new WebViewClient() {
                     @Override public void onPageStarted(WebView child,String url,android.graphics.Bitmap icon) {
                         if(url==null || url.equals("about:blank")) return;
                         Uri uri=Uri.parse(url);
-                        if(isLocal(uri)) web.loadUrl(url);
+                        if(url.startsWith("blob:")) handleDownload(url,null,null,null);
+                        else if(isLocal(uri)) web.loadUrl(url);
                         else if("https".equals(uri.getScheme()) || "http".equals(uri.getScheme()) || "mailto".equals(uri.getScheme())) {
                             try { startActivity(new Intent(Intent.ACTION_VIEW,uri).addCategory(Intent.CATEGORY_BROWSABLE)); }
                             catch(ActivityNotFoundException e) { error("没有可打开此链接的应用"); }
@@ -126,45 +136,103 @@ public final class MainActivity extends Activity {
             @Override public boolean onJsAlert(WebView view,String url,String message,JsResult result) { new AlertDialog.Builder(MainActivity.this).setMessage(message).setPositiveButton("确定",(d,w)->result.confirm()).setOnCancelListener(d->result.cancel()).show(); return true; }
             @Override public boolean onJsConfirm(WebView view,String url,String message,JsResult result) { new AlertDialog.Builder(MainActivity.this).setMessage(message).setPositiveButton("确定",(d,w)->result.confirm()).setNegativeButton("取消",(d,w)->result.cancel()).setOnCancelListener(d->result.cancel()).show(); return true; }
         });
-        web.setDownloadListener((url,agent,disposition,mime,length) -> {
-            if (busy || downloadUrl != null) { error("请等待当前文件操作完成"); return; }
-            if (!url.startsWith("blob:") && !isLocal(Uri.parse(url)) && !url.startsWith("https://")) { error("不支持这个下载地址"); return; }
-            downloadUrl=url; downloadAgent=agent;
-            String name=URLUtil.guessFileName(url,disposition,mime);
-            if (name==null || name.isEmpty() || name.equals("downloadfile.bin")) name="SillyTavern-export";
-            createDocument(DOWNLOAD,name,mime==null ? "application/octet-stream" : mime);
+        web.setDownloadListener((url,agent,disposition,mime,length) -> handleDownload(url,agent,disposition,mime));
+    }
+    private void handleDownload(String url,String agent,String disposition,String mime) {
+        if (busy || downloadUrl!=null) {
+            if(url.startsWith("blob:")) web.evaluateJavascript("window.__LOCAL_TAVERN_DOWNLOADS__?.discard("+JSONObject.quote(url)+")",null);
+            error("请等待当前文件操作完成"); return;
+        }
+        if (!url.startsWith("blob:") && !isLocal(Uri.parse(url)) && !url.startsWith("https://")) { error("不支持这个下载地址"); return; }
+        downloadUrl=url; downloadAgent=agent; busy=true;
+        String guessed=URLUtil.guessFileName(url,disposition,mime);
+        final String fallback=(guessed==null || guessed.isEmpty() || guessed.equals("downloadfile.bin")) ? "SillyTavern-export" : guessed;
+        final String fallbackMime=mime==null ? "application/octet-stream" : mime;
+        if(!url.startsWith("blob:")) { createDocument(DOWNLOAD,fallback,fallbackMime); return; }
+        final int generation=++downloadGeneration;
+        blobKey="__tavern_export_"+UUID.randomUUID().toString().replace("-","");
+        String key=JSONObject.quote(blobKey);
+        // Claim before showing SAF: upstream revokes the original URL in the click's stack.
+        web.evaluateJavascript("(()=>{const r=window.__LOCAL_TAVERN_DOWNLOADS__,d=r?.claim("+JSONObject.quote(url)+");if(!d)return null;window["+key+"]={state:'ready',blob:d.blob,size:d.blob.size,ticket:d.id};return JSON.stringify({name:d.name,mime:d.blob.type,size:d.blob.size})})()",raw->{
+            if(generation!=downloadGeneration || closing) return;
+            try {
+                if(raw==null || raw.equals("null")) throw new IOException("未能保留导出文件，请重新导出");
+                JSONObject metadata=new JSONObject(new JSONArray("["+raw+"]").getString(0));
+                if(metadata.getLong("size")>2L*1024*1024*1024) throw new IOException("导出文件超过 2 GB");
+                String name=metadata.optString("name").replaceAll("[\\\\/\\p{Cntrl}]","_");
+                String type=metadata.optString("mime");
+                createDocument(DOWNLOAD,name.isEmpty()?fallback:name,type.isEmpty()?fallbackMime:type);
+            } catch(Exception e) { clearDownload(); error("导出失败："+e.getMessage()); }
         });
     }
     private boolean isLocal(Uri uri) { return "http".equals(uri.getScheme()) && "127.0.0.1".equals(uri.getHost()) && uri.getPort()==RuntimeContract.PORT; }
 
-    private void startRuntime() {
-        if (closing) return;
-        requestedStartMillis=System.currentTimeMillis();
-        try { startForegroundService(new Intent(this,RuntimeService.class)); pollReady(0); }
-        catch (Exception e) { status.setText("服务无法启动："+e.getMessage()); progress.setVisibility(View.GONE); }
+    private boolean isRuntimeReady() {
+        HttpURLConnection connection=null;
+        try {
+            connection=(HttpURLConnection)new URL(RuntimeContract.ORIGIN+"/csrf-token").openConnection();
+            connection.setConnectTimeout(700); connection.setReadTimeout(700);
+            return connection.getResponseCode()==200;
+        } catch (Exception ignored) { return false; }
+        finally { if(connection!=null) connection.disconnect(); }
     }
-    private void pollReady(int attempt) {
-        if (closing || busy || ready || polling) return; polling=true;
+    private void checkRuntimeOnResume() {
+        if (closing || !resumed) return;
+        if (busy || upload!=null || downloadUrl!=null) { ui.postDelayed(resumeRuntimeCheck,1000); return; }
+        if (runtimeStarting || runtimeChecking) return;
+        if (!ready) { startRuntime(); return; }
+        runtimeChecking=true;
+        final int generation=runtimeGeneration;
+        io.execute(()->{
+            boolean available=isRuntimeReady();
+            ui.post(()->{
+                if (generation!=runtimeGeneration) return;
+                runtimeChecking=false;
+                if (closing || !resumed) return;
+                if (busy || upload!=null || downloadUrl!=null) { ui.postDelayed(resumeRuntimeCheck,1000); return; }
+                if (!available) startRuntime(true);
+            });
+        });
+    }
+    private void startRuntime() { startRuntime(false); }
+    private void startRuntime(boolean preservePage) {
+        if (closing || busy || runtimeStarting) return;
+        ready=false; runtimeStarting=true; runtimeChecking=false;
+        final int generation=++runtimeGeneration;
+        requestedStartMillis=System.currentTimeMillis();
+        if(preservePage) { web.setVisibility(View.GONE); boot.setVisibility(View.VISIBLE); status.setText("正在恢复本地服务…"); progress.setVisibility(View.VISIBLE); }
+        try { startForegroundService(new Intent(this,RuntimeService.class)); pollReady(0,generation,preservePage); }
+        catch (Exception e) { runtimeStarting=false; status.setText("服务无法启动："+e.getMessage()); progress.setVisibility(View.GONE); }
+    }
+    private void pollReady(int attempt,int generation,boolean preservePage) {
+        if (closing || generation!=runtimeGeneration) return;
+        if (busy) { ui.postDelayed(()->pollReady(attempt,generation,preservePage),1000); return; }
         io.execute(() -> {
-            boolean ok=false; String message="正在启动本地服务…", state="starting";
-            try {
-                HttpURLConnection connection=(HttpURLConnection)new URL(RuntimeContract.ORIGIN+"/csrf-token").openConnection();
-                connection.setConnectTimeout(700); connection.setReadTimeout(700);
-                ok=connection.getResponseCode()==200; connection.disconnect();
-            } catch (Exception ignored) {}
+            boolean ok=isRuntimeReady(); String message="正在启动本地服务…", state="starting";
             if (!ok) try {
                 JSONObject json=new JSONObject(new String(BundleInstaller.readAll(new FileInputStream(RuntimeContract.status(this))),StandardCharsets.UTF_8));
                 if(json.optLong("time",0)>=requestedStartMillis) {message=json.optString("message",message);state=json.optString("state",state);}
             } catch (Exception ignored) {}
             boolean available=ok; String finalMessage=message, finalState=state;
             ui.post(() -> {
-                polling=false; if (closing || busy) return;
-                if (available) { ready=true; boot.setVisibility(View.GONE); web.setVisibility(View.VISIBLE); web.loadUrl(RuntimeContract.ORIGIN+"/"); }
-                else { status.setText(finalMessage); if (attempt<240 && !finalState.equals("failed") && !finalState.equals("stopped")) ui.postDelayed(()->pollReady(attempt+1),1000); else progress.setVisibility(View.GONE); }
+                if (closing || generation!=runtimeGeneration) return;
+                if (busy) { ui.postDelayed(()->pollReady(attempt,generation,preservePage),1000); return; }
+                if (available) {
+                    runtimeStarting=false; ready=true; boot.setVisibility(View.GONE); web.setVisibility(View.VISIBLE); progress.setVisibility(View.GONE);
+                    // A service restart does not require a navigation: keep the live chat and unsent draft.
+                    if(!preservePage) web.loadUrl(RuntimeContract.ORIGIN+"/");
+                } else {
+                    status.setText(finalMessage);
+                    if (attempt<240 && !finalState.equals("failed") && !finalState.equals("stopped")) ui.postDelayed(()->pollReady(attempt+1,generation,preservePage),1000);
+                    else { runtimeStarting=false; progress.setVisibility(View.GONE); }
+                }
             });
         });
     }
-    private void stopRuntime() { startService(new Intent(this,RuntimeService.class).setAction(RuntimeContract.ACTION_STOP)); }
+    private void stopRuntime() {
+        runtimeGeneration++; runtimeStarting=false; runtimeChecking=false;
+        startService(new Intent(this,RuntimeService.class).setAction(RuntimeContract.ACTION_STOP));
+    }
     private void restartRuntime() {
         if (busy) return;
         busy=true;
@@ -199,7 +267,7 @@ public final class MainActivity extends Activity {
     }
     private void createDocument(int request,String name,String mime) {
         try { startActivityForResult(new Intent(Intent.ACTION_CREATE_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType(mime).putExtra(Intent.EXTRA_TITLE,name),request); }
-        catch (Exception e) { downloadUrl=null; error("无法打开保存位置选择器"); }
+        catch (Exception e) { if(request==DOWNLOAD) clearDownload(); error("无法打开保存位置选择器"); }
     }
     @Override protected void onActivityResult(int request,int result,Intent data) {
         super.onActivityResult(request,result,data);
@@ -213,7 +281,7 @@ public final class MainActivity extends Activity {
                 upload.onReceiveValue(values); upload=null;
             } return;
         }
-        if (result!=RESULT_OK || data==null || data.getData()==null) { if(request==DOWNLOAD) downloadUrl=null; return; }
+        if (result!=RESULT_OK || data==null || data.getData()==null) { if(request==DOWNLOAD) clearDownload(); return; }
         Uri uri=data.getData();
         if (request==DOWNLOAD) { saveDownload(uri); return; }
         if (request==EXTENSION || request==SERVER_PLUGIN) {
@@ -264,43 +332,59 @@ public final class MainActivity extends Activity {
     }
     // Chunked blob export uses evaluation callbacks, without exposing a JavaScript-to-Java bridge.
     private void startBlobDownload(Uri destination) {
-        busy=true; blobOffset=0; blobKey="__tavern_export_"+UUID.randomUUID().toString().replace("-","");
-        try { downloadStream=getContentResolver().openOutputStream(destination); }
+        if(blobKey==null) { clearDownload(); error("导出文件已释放，请重新导出"); return; }
+        busy=true; blobOffset=0;
+        try { downloadStream=getContentResolver().openOutputStream(destination); if(downloadStream==null) throw new IOException("无法创建文件"); }
         catch(Exception e) { finishBlob("无法打开保存文件："+e.getMessage()); return; }
-        String key=JSONObject.quote(blobKey), url=JSONObject.quote(downloadUrl);
-        web.evaluateJavascript("(()=>{let k="+key+";window[k]={state:'loading'};fetch("+url+").then(r=>r.blob()).then(b=>window[k]={state:'ready',blob:b,size:b.size}).catch(e=>window[k]={state:'error',error:String(e)});return true})()",value->ui.postDelayed(()->pollBlob(0),30));
+        pollBlob(downloadGeneration,0);
     }
-    private void pollBlob(int attempt) {
-        if(blobKey==null) return;
+    private void pollBlob(int generation,int attempt) {
+        if(blobKey==null || generation!=downloadGeneration || closing) return;
         String key=JSONObject.quote(blobKey);
         web.evaluateJavascript("(()=>{let s=window["+key+"];return s?JSON.stringify({state:s.state,size:s.size,error:s.error,chunk:s.chunk}):null})()",raw->{
+            if(generation!=downloadGeneration || closing) return;
             try {
                 if(raw==null || raw.equals("null")) throw new IOException("导出页面已关闭");
                 JSONObject state=new JSONObject(new JSONArray("["+raw+"]").getString(0));
                 String current=state.optString("state");
                 if(current.equals("error")) throw new IOException(state.optString("error"));
-                if(current.equals("loading")) { if(attempt>1200) throw new IOException("读取导出文件超时"); ui.postDelayed(()->pollBlob(attempt+1),50); return; }
+                if(current.equals("loading")) { if(attempt>1200) throw new IOException("读取导出文件超时"); ui.postDelayed(()->pollBlob(generation,attempt+1),50); return; }
                 long size=state.getLong("size"); if(size>2L*1024*1024*1024) throw new IOException("导出文件超过 2 GB");
                 if(current.equals("chunk")) {
                     byte[] chunk=android.util.Base64.decode(state.getString("chunk"),android.util.Base64.DEFAULT);
+                    final OutputStream target=downloadStream;
+                    final long nextOffset=blobOffset+chunk.length;
                     io.execute(()->{
-                        try { downloadStream.write(chunk); blobOffset+=chunk.length; ui.post(()->nextBlobChunk(size)); }
-                        catch(Exception e) { ui.post(()->finishBlob("保存失败："+e.getMessage())); }
+                        if(generation!=downloadGeneration) return;
+                        try { target.write(chunk); ui.post(()->{ if(generation==downloadGeneration && !closing) {blobOffset=nextOffset;nextBlobChunk(generation,size);} }); }
+                        catch(Exception e) { ui.post(()->{ if(generation==downloadGeneration && !closing) finishBlob("保存失败："+e.getMessage()); }); }
                     });
-                } else nextBlobChunk(size);
+                } else nextBlobChunk(generation,size);
             } catch(Exception e) { finishBlob("导出失败："+e.getMessage()); }
         });
     }
-    private void nextBlobChunk(long size) {
+    private void nextBlobChunk(int generation,long size) {
+        if(generation!=downloadGeneration || blobKey==null || closing) return;
         if(blobOffset>=size) { finishBlob(null); return; }
         String key=JSONObject.quote(blobKey);
-        web.evaluateJavascript("(()=>{let s=window["+key+"];s.state='loading';s.chunk=null;s.blob.slice("+blobOffset+","+(blobOffset+128*1024)+").arrayBuffer().then(b=>{let u=new Uint8Array(b),t='';for(let i=0;i<u.length;i+=8192)t+=String.fromCharCode(...u.subarray(i,i+8192));s.chunk=btoa(t);s.state='chunk'}).catch(e=>{s.error=String(e);s.state='error'});return true})()",v->ui.postDelayed(()->pollBlob(0),10));
+        web.evaluateJavascript("(()=>{let s=window["+key+"];if(!s)return false;s.state='loading';s.chunk=null;s.blob.slice("+blobOffset+","+(blobOffset+128*1024)+").arrayBuffer().then(b=>{let u=new Uint8Array(b),t='';for(let i=0;i<u.length;i+=8192)t+=String.fromCharCode(...u.subarray(i,i+8192));s.chunk=btoa(t);s.state='chunk'}).catch(e=>{s.error=String(e);s.state='error'});return true})()",v->ui.postDelayed(()->pollBlob(generation,0),10));
     }
     private void finishBlob(String failure) {
-        try { if(downloadStream!=null) downloadStream.close(); } catch(IOException ignored) {}
-        if(blobKey!=null && web!=null) web.evaluateJavascript("delete window["+JSONObject.quote(blobKey)+"]",null);
-        downloadStream=null; blobKey=null;downloadUrl=null;busy=false;
+        try { if(downloadStream!=null) downloadStream.close(); }
+        catch(IOException e) { if(failure==null) failure="保存失败："+e.getMessage(); }
+        downloadStream=null; clearDownload();
         if(failure==null) toast("文件已保存"); else error(failure);
+    }
+    private void clearDownload() {
+        downloadGeneration++;
+        if(blobKey!=null && web!=null) {
+            String key=JSONObject.quote(blobKey);
+            web.evaluateJavascript("(()=>{const s=window["+key+"];if(s)window.__LOCAL_TAVERN_DOWNLOADS__?.release(s.ticket);delete window["+key+"]})()",null);
+        }
+        final OutputStream old=downloadStream;
+        if(old!=null) io.execute(()->{try {old.close();}catch(IOException ignored){}});
+        if(downloadUrl!=null) busy=false;
+        downloadStream=null;blobKey=null;downloadUrl=null;downloadAgent=null;blobOffset=0;
     }
     private void showLog() {
         io.execute(()->{
@@ -328,12 +412,12 @@ public final class MainActivity extends Activity {
         if(request==MIC && microphone!=null) { if(result.length>0 && result[0]==PackageManager.PERMISSION_GRANTED) microphone.grant(new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE}); else microphone.deny(); microphone=null; }
     }
     @Override public void onBackPressed() { if(busy) { toast("正在处理文件，请稍候"); return; } if(web.canGoBack()) web.goBack(); else moveTaskToBack(true); }
-    @Override protected void onResume() { super.onResume(); if(web!=null) web.onResume(); }
-    @Override protected void onPause() { if(web!=null) {web.onPause();CookieManager.getInstance().flush();} super.onPause(); }
+    @Override protected void onResume() { super.onResume(); resumed=true; if(web!=null) web.onResume(); ui.removeCallbacks(resumeRuntimeCheck); ui.post(resumeRuntimeCheck); }
+    @Override protected void onPause() { resumed=false; ui.removeCallbacks(resumeRuntimeCheck); if(web!=null) {web.onPause();CookieManager.getInstance().flush();} super.onPause(); }
     @Override protected void onDestroy() {
         closing=true;ui.removeCallbacksAndMessages(null);
         if(upload!=null) upload.onReceiveValue(null);if(microphone!=null) microphone.deny();
-        try { if(downloadStream!=null) downloadStream.close(); } catch(Exception ignored) {}
+        clearDownload();
         if(web!=null) {web.stopLoading();web.destroy();} io.shutdown();super.onDestroy();
     }
     private int dp(int value) { return Math.round(value*getResources().getDisplayMetrics().density); }

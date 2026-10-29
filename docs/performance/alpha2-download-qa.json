@@ -1,0 +1,27 @@
+{
+  "device": "Android 15 / API 35 arm64 emulator-5554",
+  "package": "app.local.tavern",
+  "version": "0.1.0-alpha.2 / code 3 debug",
+  "method": "CDP executes real /scripts/utils.js download, Android DocumentsUI saves to Downloads",
+  "filename": "角色卡-delay-export.json",
+  "pickerFilenamePreserved": true,
+  "originalURLRevoked": true,
+  "expectedBytes": 780045,
+  "actualBytes": 780045,
+  "expectedSha256": "2fe538123c7303cff887d756845b6fddeed5b4a3d62fc64654911a9c4c00a687",
+  "actualSha256": "2fe538123c7303cff887d756845b6fddeed5b4a3d62fc64654911a9c4c00a687",
+  "pickerWaitBeforeSaveMs": 14223,
+  "minimumDeliberatePickerWaitMs": 10000,
+  "successNativeSlots": [],
+  "successRetainedURLReclaimFails": true,
+  "cancel": {
+    "filename": "取消-export.json",
+    "readySlotBeforeCancel": true,
+    "releaseCallObserved": true,
+    "nativeSlotsAfterCancel": [],
+    "revokedURLCannotBeClaimed": true,
+    "noOutputFileCreated": true
+  },
+  "hostTests": "6/6 android-downloads.test.mjs pass; exact upstream utils, PromptManager and chats callers",
+  "limitations": "Android emulator debug build only; no physical device proof"
+}

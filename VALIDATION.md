@@ -1,8 +1,18 @@
 # 本次构建验证
 
-日期：2026-10-29（Asia/Shanghai）。应用版本 0.1.0-alpha.1，上游 SillyTavern 1.19.0。以下保留首个开发包的验证，并列出签名 Release 的复验。
+日期：2026-10-29（Asia/Shanghai）。当前应用版本 0.1.0-alpha.2，上游 SillyTavern 1.19.0。下方区分 alpha.2 修复复验和 alpha.1 的签名构建基线。
 
-## 已实际通过
+## alpha.2 修复复验
+
+- ARM64 与 x86_64 独立签名 Release 构建、Android Lint 均成功；versionCode 为 3，沿用原 RSA-3072 发布证书。
+- 最终签名 ARM64 包在 Android 35 全新安装后，完整前端、CSRF、设置、角色卡导入导出与 WASM 图像处理、世界书、聊天持久化、真实 tiktoken、模拟 OpenAI API 和 SSE 均通过。[原始记录](docs/performance/alpha2-signed-smoke.json)。
+- 6 个下载测试执行真实上游 `utils.download`、PromptManager 和附件导出源码，覆盖立即撤销 URL、文件名、内容、取消、导航清理与容量上限；Git 兼容层测试继续通过。
+- Android 35 ARM64 Debug 实测上游导出：原 Blob URL 已失效，系统保存窗口等待 14.223 秒后仍成功保存中文文件名，780,045 字节及 SHA-256 与源文件完全一致。取消保存会释放保留文件且不生成输出。[原始记录](docs/performance/alpha2-download-qa.json)。
+- 同一模拟器只杀独立运行时进程后，原 Activity 返回前台自动恢复服务；主进程 PID 不变，未发送草稿、当前聊天、文档 nonce 与 CSRF 会话保持，原会话请求返回预期 HTTP 204。两次健康返回前台均未重启或重载。[原始记录](docs/performance/alpha2-lifecycle-qa.json)。
+
+上述两个原生修复场景使用最终源码的 Debug 包进行可观测检查；它们不构成实体手机或长期省电策略的证明。性能原始报告仍明确标注其 alpha.1 构建基线。
+
+## alpha.1 已实际通过的基线
 
 | 检查 | 环境与结果 |
 | --- | --- |
@@ -34,7 +44,7 @@
 ## 复现入口
 
 - `scripts/build.sh --skip-prepare`：编译和 Lint，生成 APK 与校验和。
-- `npm test`：真实 Git 兼容层测试。
+- `npm test`：真实 Git 兼容层及上游导出生命周期测试（先准备固定上游源码）。
 - `scripts/test_archive.sh`：ZIP 安全测试。
 - `scripts/test_runtime_storage.sh`：安装与旧版本清理测试。
 - `scripts/test_backup.sh`：导出和恢复容量、流式写入及变化检测测试。

@@ -1,4 +1,4 @@
-本地酒馆 / Local Tavern Android 0.1.0-alpha.1
+本地酒馆 / Local Tavern Android 0.1.0-alpha.2
 
 Independent Android packaging of SillyTavern. This is not an official SillyTavern release.
 

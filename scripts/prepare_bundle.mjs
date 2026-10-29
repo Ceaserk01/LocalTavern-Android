@@ -47,6 +47,12 @@ await fs.cp(path.join(source, 'node_modules'), path.join(stage, 'node_modules'),
     filter: p => !p.split(path.sep).includes('.bin') });
 const patches = await patchUpstream(stage);
 await fs.copyFile(path.join(project, 'runtime/android-entry.mjs'), path.join(stage, 'android-entry.mjs'));
+// Install before any upstream module or extension can create/revoke a download URL.
+await fs.copyFile(path.join(project, 'runtime/android-downloads.js'), path.join(stage, 'public/android-downloads.js'));
+const indexFile = path.join(stage, 'public/index.html');
+const indexHtml = await fs.readFile(indexFile, 'utf8');
+if (!indexHtml.includes('<head>')) throw new Error('Upstream index has no download-hook insertion point');
+await fs.writeFile(indexFile, indexHtml.replace('<head>', '<head>\n    <script src="/android-downloads.js"></script>'));
 
 // Bake frontend libraries on the build machine, never on the phone's first start.
 process.chdir(stage);
