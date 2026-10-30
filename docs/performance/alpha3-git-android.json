@@ -1,0 +1,137 @@
+{
+  "passed": true,
+  "target": "http://127.0.0.1:18768",
+  "gitHost": "10.0.2.2",
+  "fixture": "android-git-smoke-ac13d345",
+  "checks": [
+    "Git URL install; manifest discovery and executable JS served",
+    "Version, branch, commit, remote and up-to-date status",
+    "Remote update fetched and checked out; manifest and JS both updated",
+    "Unshallow and list all branches; switch slash-containing remote branch and back",
+    "Move local/global extensions with Git metadata and serving preserved",
+    "Delete removes discovery entry and extension files"
+  ],
+  "requests": [
+    {
+      "endpoint": "/csrf-token",
+      "status": 200,
+      "elapsedMs": 31
+    },
+    {
+      "endpoint": "/api/extensions/install",
+      "status": 200,
+      "elapsedMs": 1178
+    },
+    {
+      "endpoint": "/api/extensions/discover",
+      "status": 200,
+      "elapsedMs": 7
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/index.js",
+      "status": 200,
+      "elapsedMs": 6
+    },
+    {
+      "endpoint": "/api/extensions/version",
+      "status": 200,
+      "elapsedMs": 750
+    },
+    {
+      "endpoint": "/api/extensions/version",
+      "status": 200,
+      "elapsedMs": 247
+    },
+    {
+      "endpoint": "/api/extensions/update",
+      "status": 200,
+      "elapsedMs": 294
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/index.js",
+      "status": 200,
+      "elapsedMs": 6
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/manifest.json",
+      "status": 200,
+      "elapsedMs": 6
+    },
+    {
+      "endpoint": "/api/extensions/version",
+      "status": 200,
+      "elapsedMs": 210
+    },
+    {
+      "endpoint": "/api/extensions/branches",
+      "status": 200,
+      "elapsedMs": 172
+    },
+    {
+      "endpoint": "/api/extensions/switch",
+      "status": 204,
+      "elapsedMs": 44
+    },
+    {
+      "endpoint": "/api/extensions/version",
+      "status": 200,
+      "elapsedMs": 185
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/index.js",
+      "status": 200,
+      "elapsedMs": 4
+    },
+    {
+      "endpoint": "/api/extensions/switch",
+      "status": 204,
+      "elapsedMs": 50
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/index.js",
+      "status": 200,
+      "elapsedMs": 5
+    },
+    {
+      "endpoint": "/api/extensions/move",
+      "status": 204,
+      "elapsedMs": 10
+    },
+    {
+      "endpoint": "/api/extensions/discover",
+      "status": 200,
+      "elapsedMs": 5
+    },
+    {
+      "endpoint": "/api/extensions/version",
+      "status": 200,
+      "elapsedMs": 192
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/index.js",
+      "status": 200,
+      "elapsedMs": 5
+    },
+    {
+      "endpoint": "/api/extensions/move",
+      "status": 204,
+      "elapsedMs": 7
+    },
+    {
+      "endpoint": "/api/extensions/delete",
+      "status": 200,
+      "elapsedMs": 12
+    },
+    {
+      "endpoint": "/api/extensions/discover",
+      "status": 200,
+      "elapsedMs": 4
+    },
+    {
+      "endpoint": "/scripts/extensions/third-party/android-git-smoke-ac13d345/manifest.json",
+      "status": 404,
+      "elapsedMs": 4
+    }
+  ],
+  "gitUrl": "http://10.0.2.2:53560/android-git-smoke-ac13d345.git"
+}

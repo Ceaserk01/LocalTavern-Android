@@ -1,6 +1,19 @@
 # 本次构建验证
 
-日期：2026-10-29（Asia/Shanghai）。当前应用版本 0.1.0-alpha.2，上游 SillyTavern 1.19.0。下方区分 alpha.2 修复复验和 alpha.1 的签名构建基线。
+更新日期：2026-10-30（Asia/Shanghai），上游 SillyTavern 1.19.0。本页区分 alpha.3 开发候选、alpha.2 修复复验和 alpha.1 签名构建基线；各原始报告保留实际测试日期，发布状态以仓库 Releases 为准。
+
+## alpha.3 开发候选验证
+
+- 签名 ARM64 候选包从 alpha.2 覆盖升级成功；首次启动前，原设置文件和独立测试标记逐字节保持，测试标记已清理。[升级记录](docs/performance/alpha3-upgrade-qa.json)。
+- 新 Git 适配器在手机内通过 24 次真实 smart HTTP 接口请求，保留更新、全部分支发现、分支切换及本地／全局扩展移动。[安卓记录](docs/performance/alpha3-git-android.json)。主机另验证空闲超时会真正断开停滞连接，同时允许持续传输的慢连接；普通检查不再下载无关分支。
+- 补充功能测试在主机及 alpha.2 实际签名安卓包通过 78 次请求：群聊及聊天元数据、搜索、导出、重命名、八类预设、快捷回复和主题持久化、二进制附件、头像裁剪、立绘文件。全局设置未改写，测试资料已清理；立绘 API 无法移除的唯一空目录由测试操作者用 `rmdir` 移除。[主机记录](docs/performance/features-host.json)、[安卓记录](docs/performance/features-android.json)、[空目录清理](docs/performance/features-android-cleanup.json)。这组测试不代表快捷回复执行或群聊模型生成已经验证。
+- 系统朗读使用 Android 真实 TextToSpeech 引擎；签名候选包实测取得 442 个音色，中英文完成事件、队列取消、错误、暂停恢复和导航清理通过。4036 字符容量用例由 3990 个前导空格及短英文组成，只证明跨引擎输入长度限制的分段，不代表朗读了 4036 个普通字。首次使用前不绑定引擎。[原生朗读记录](docs/performance/native-tts-qa.json)。模拟器禁用宿主音频输出，因此这不是实体扬声器听感证明；安装的引擎和声音数据仍是必要条件，暂停恢复可能重复最近尚未报告的片段。
+- 签名 ARM64 候选包通过 Android 35 原生交互复验：等待应用及设置就绪、加载遮罩消失和输入区稳定可点击后，以真实触控聚焦输入区，原生按键产生受信任输入事件且文字一致。软键盘在触摸后的 2 秒自动观察窗内显示，触摸瞬时尚不可见；之后的显式键盘请求单独记录。剪贴板写入仍可用；两次读取分别通过精确识别的本应用原生对话框点选「取消」及「允许」，取消返回 `NotAllowedError`、允许取得测试文字。修复前，同一受信任点击、文档焦点和用户激活条件下已复现原 WebView 读取失败。测试内恢复原剪贴板、草稿和键盘状态，移除自己的测试 APK 并重新打开应用。[原生交互记录](docs/performance/alpha3-interaction-qa.json)。范围是该模拟器的酒馆输入区及剪贴板 API，不代表所有输入法、第三方编辑器或实体设备；不声称草稿可跨 Instrumentation 结束目标进程后保留。
+- 实际 WebView 基准确认 5000 条聊天完整保留，按现有配置初始显示 100 条，历史加载后 200 条且消息 ID 连续，编辑取消不改变消息；只操作独立测试资料，结束后恢复原页面和草稿。[alpha.2 DOM 基线](docs/performance/webview-alpha2-baseline.json)。该次首次欢迎弹窗尚未完成，数据和 DOM 校验有效，但不能用作无遮挡用户界面体验的对照。双 rAF、合成输入和 V8 堆指标的范围在报告中明确标注，不等同于实体手机 FPS、键盘输入延迟或总内存。
+- 原消息正则深度计算会为 5000 条聊天的最后 100 条构造 500000 个索引对象；等价尾部扫描改为 5050 次消息读取、零索引对象。测试同时运行原算法、实际暂存算法及上游正则引擎，保留稀疏数组、系统消息和深度限制的结果；没有改动分页配置、消息事件顺序或异步渲染方式。最终签名候选已确认实际执行尾部扫描，5000 条消息、历史加载、编辑取消和测试清理均通过；前后整体界面耗时有波动，不能据此宣称提速。[无遮挡对照与原始样本](docs/performance/README.md)。
+- 加入剪贴板和深度优化后的签名候选再次通过完整核心后端、WASM、模拟模型 API 与 SSE 测试。[本版记录](docs/performance/alpha3-signed-smoke.json)。
+- 最终候选实际 WebView 的上游 Generate → 模拟模型 SSE → 逐步 DOM 更新 → 聊天保存完整链路通过；单聊一次请求、列表策略两人群聊两次请求，最终回复、成员顺序及 JSONL 一致，发送状态恢复。实际 QuickReply 类的宏展开和斜杠命令执行通过，快捷回复本身不落盘；这是内存执行测试，不声称已验证全部自动执行触发器。驱动核对前端实际发送的模型配置，随后仅替换测试 secret_id；模拟 API 只接受假凭据。原页面、草稿、内存设置均恢复，全局设置文件逐字节不变，独立角色、群聊、备份和转发已删除。[完整链路记录](docs/performance/alpha3-generation-qa.json)。
+- 设备内测试 APK 的 SHA-256 与本机签名候选完全相同，避免只凭相同版本号推断测试了相同代码。[安装产物记录](docs/performance/alpha3-installed-artifact.json)。
 
 ## alpha.2 修复复验
 
@@ -44,11 +57,14 @@
 ## 复现入口
 
 - `scripts/build.sh --skip-prepare`：编译和 Lint，生成 APK 与校验和。
-- `npm test`：真实 Git 兼容层及上游导出生命周期测试（先准备固定上游源码）。
+- `npm test`：真实 Git smart HTTP／空闲超时、上游 Blob 导出生命周期、原生朗读适配及上游 TTS provider、剪贴板及上游粘贴回调、消息正则深度等价性测试（先准备固定上游源码）。
+- `scripts/test_android_interaction.sh --build-only`：仅编译独立原生交互测试 APK，不连接设备或读取签名。实际运行需显式指定一次性模拟器、相同签名及 `TAVERN_INTERACTION_CLIPBOARD_CONSENT=1`；[构建文档](docs/BUILDING.md) 说明参数与进程重启范围。
 - `scripts/test_archive.sh`：ZIP 安全测试。
 - `scripts/test_runtime_storage.sh`：安装与旧版本清理测试。
 - `scripts/test_backup.sh`：导出和恢复容量、流式写入及变化检测测试。
 - `node scripts/smoke_server.mjs`：桌面实际后端测试。
+- `npm run test:features`：主机实际后端的群聊、预设、快捷回复、主题、二进制附件、头像与立绘补充测试；可通过 `TAVERN_TEST_URL` 指定实际安卓后端。
+- `TAVERN_UI_TEST_DISPOSABLE=1 TAVERN_BENCH_ADB_SERIAL=emulator-5554 npm run test:ui-generation`：专用模拟器内的实际前端单聊／群聊流式生成、保存和快捷回复执行；细节见构建文档。
 - `adb forward tcp:18768 tcp:18766` 后，`TAVERN_TEST_URL=http://127.0.0.1:18768 TAVERN_TEST_API_HOST=10.0.2.2 node scripts/smoke_server.mjs`：安卓实际后端与模拟模型 API。
 - 同样转发后 `node scripts/smoke_extensions.mjs`：安卓扩展接口测试。
 - `node scripts/prepare_bundle.mjs --verify-source`：检查固定上游来源；源码发行包可在没有 `.git` 时验证逐文件摘要。

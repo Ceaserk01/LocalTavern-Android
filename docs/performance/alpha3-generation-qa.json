@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "fixture": "ltgen_b852126ab16e476d",
+  "completed": true,
+  "startedAt": "2026-10-30T07:41:38.374Z",
+  "scope": "Disposable own-app WebView extension API invokes actual upstream Generate, mock OpenAI SSE transport, stream rendering and chat persistence. CDP userGesture/synthetic actions do not establish trusted touch or IME. No paid API or original secret is sent to the mock.",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "workload": {
+    "actualFrontendGeneration": true,
+    "mockOnly": true,
+    "twoMemberListGroup": true,
+    "inMemoryQuickReplyExecution": true
+  },
+  "measurements": {
+    "solo": {
+      "elapsedMs": 1645,
+      "chatId": "ltgen_b852126ab16e476d - 2026-10-30@15h41m38s934ms",
+      "messageCount": 3,
+      "finalText": "ltgen_b852126ab16e476d answer 1: 本地流式成功。",
+      "domMatches": true,
+      "partialRenderCount": 2,
+      "sendReset": true,
+      "savesObserved": 4,
+      "savedFinalMatches": true
+    },
+    "quickReply": {
+      "actualQuickReplyClasses": true,
+      "macroExpanded": true,
+      "slashCommandPipeMatches": true,
+      "inMemoryOnly": true
+    },
+    "group": {
+      "elapsedMs": 2916.6999999999534,
+      "chatId": "ltgen_b852126ab16e476d_groupchat",
+      "members": [
+        "ltgen_b852126ab16e476d",
+        "ltgen_b852126ab16e476d_B"
+      ],
+      "texts": [
+        "ltgen_b852126ab16e476d answer 2: 本地流式成功。",
+        "ltgen_b852126ab16e476d answer 3: 本地流式成功。"
+      ],
+      "domContainsBothReplies": true,
+      "sendReset": true,
+      "savedBothFinalMatches": true
+    }
+  },
+  "cleanup": {
+    "pageRestored": true,
+    "characterDeleted": true,
+    "backupsDeleted": 4,
+    "forwardsRemoved": 2,
+    "errors": [],
+    "page": {
+      "restored": true,
+      "settingsWritesBlocked": 2,
+      "ownedChatSaveWrites": 9,
+      "msSinceLastOwnedChatSave": 368.30000000004657
+    },
+    "charactersDeleted": 2,
+    "groupsDeleted": 1,
+    "noOwnedFixturesRemain": true,
+    "persistedSettingsByteExact": true
+  },
+  "target": {
+    "packageName": "app.local.tavern",
+    "serial": "emulator-5554",
+    "mainPid": 4370,
+    "apiLevel": "35",
+    "abi": "arm64-v8a",
+    "emulator": true,
+    "debuggerSocket": "localabstract:webview_devtools_remote_4370",
+    "origin": "http://127.0.0.1:18766",
+    "apk": [
+      "versionCode=4 minSdk=26 targetSdk=35",
+      "versionName=0.1.0-alpha.3"
+    ],
+    "webview": {
+      "captured": true,
+      "appReady": true,
+      "settingsKeptInPageMemoryOnly": true
+    }
+  },
+  "mock": [
+    {
+      "stream": true,
+      "fakeAuthorization": true,
+      "ownPrompt": true,
+      "model": "gpt-4"
+    },
+    {
+      "stream": true,
+      "fakeAuthorization": true,
+      "ownPrompt": true,
+      "model": "gpt-4"
+    },
+    {
+      "stream": true,
+      "fakeAuthorization": true,
+      "ownPrompt": true,
+      "model": "gpt-4"
+    }
+  ],
+  "finishedAt": "2026-10-30T07:41:56.066Z"
+}

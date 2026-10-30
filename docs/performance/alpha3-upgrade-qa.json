@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-29T11:53:51.251373+00:00",
+  "device": "emulator-5554",
+  "fromVersion": "0.1.0-alpha.2/code3 signed",
+  "toVersion": "0.1.0-alpha.3/code4 signed candidate",
+  "installReplaceSucceeded": true,
+  "preExistingSettingsBytesUnchangedBeforeFirstLaunch": true,
+  "settingsSha256": "28ad07a54aeeebaf4fc64a1ba53e941d69709c6c4d17acae32ecfdb466465172",
+  "uniqueMarkerBytesUnchanged": true,
+  "markerRemoved": true
+}

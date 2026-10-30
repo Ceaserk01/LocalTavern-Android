@@ -62,13 +62,15 @@ jobs:
           cp app/libnode/LICENSE app/src/main/assets/Node-LICENSE.txt
           cp LICENSE app/src/main/assets/SillyTavern-LICENSE.txt
 
-      - name: Test Git compatibility, ZIP handling and actual bundled backend
+      - name: Test compatibility, archives and actual bundled backend workflows
         run: |
           npm test
           ./scripts/test_archive.sh
           ./scripts/test_runtime_storage.sh
           ./scripts/test_backup.sh
+          ./scripts/test_android_interaction.sh --build-only
           npm run test:integration
+          npm run test:features
 
       - name: Build unsigned release and run Android Lint
         run: ./gradlew --no-daemon :app:assembleRelease :app:lintRelease --console=plain

@@ -40,5 +40,39 @@ export async function patchUpstream(root) {
     await replace('plugins.js',
         "import { default as git, CheckRepoActions } from 'simple-git';",
         "import { default as git, CheckRepoActions } from './src/git/android-git.mjs';");
+    await replace('public/scripts/extensions/tts/system.js',
+        '    fetchTtsVoiceObjects() {',
+        '    async fetchTtsVoiceObjects() {');
+    await replace('public/scripts/extensions/tts/system.js',
+        '        return new Promise((resolve) => {',
+        `        if (speechSynthesis.__localTavernNative === true) {
+            await speechSynthesis.__localTavernVoicesReady();
+        }
+        return new Promise((resolve) => {`);
+    await replace('public/scripts/extensions/tts/system.js',
+        '            speechUtteranceChunker(utterance, {',
+        `            // Android's native engine handles its own input-size limit.
+            // Keep one utterance so completion/error covers the complete text,
+            // including long Chinese text without Western chunk delimiters.
+            if (speechSynthesis.__localTavernNative === true) {
+                speechSynthesis.speak(utterance);
+                return;
+            }
+            speechUtteranceChunker(utterance, {`);
+    await replace('public/script.js',
+        `        const usableMessages = chat.map((x, index) => ({ message: x, index: index })).filter(x => !x.message.is_system);
+        const indexOf = usableMessages.findIndex(x => x.index === Number(messageId));
+        const depth = messageId >= 0 && indexOf !== -1 ? (usableMessages.length - indexOf - 1) : undefined;`,
+        `        // Regex depth counts later non-system messages. Scan only the tail
+        // instead of allocating a whole-chat index for every rendered message.
+        const numericMessageId = Number(messageId);
+        let depth;
+        if (Number.isInteger(numericMessageId) && numericMessageId >= 0 && numericMessageId < chat.length
+            && numericMessageId in chat && !chat[numericMessageId].is_system) {
+            depth = 0;
+            for (let index = numericMessageId + 1; index < chat.length; index++) {
+                if (index in chat && !chat[index].is_system) depth++;
+            }
+        }`);
     return { adapter: 'isomorphic-git', changes };
 }

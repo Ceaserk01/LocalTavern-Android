@@ -6,16 +6,18 @@
 
 **[下载签名 APK / Releases](https://github.com/Ceaserk01/LocalTavern-Android/releases)** · [构建与发布](docs/BUILDING.md) · [验证记录](VALIDATION.md) · [上游 Fork](https://github.com/Ceaserk01/SillyTavern)
 
-当前发行版：**0.1.0-alpha.2**，供试用和兼容性反馈。仓库保留 Android 适配层，上游源码按固定提交获取；Release 的完整源码附件额外包含对应上游快照。
+当前发行版：**0.1.0-alpha.3**，供试用和兼容性反馈。仓库保留 Android 适配层，上游源码按固定提交获取；Release 的完整源码附件额外包含对应上游快照。
 
 ## 安装与使用
 
-1. 从 Releases 下载并安装 `LocalTavern-0.1.0-alpha.2-arm64.apk`，适合 Android 8.0 及以上的主流 ARM64 手机。x86_64 包用于对应模拟器和设备。
+1. 从 Releases 下载并安装 `LocalTavern-0.1.0-alpha.3-arm64.apk`，适合 Android 8.0 及以上的主流 ARM64 手机。x86_64 包用于对应模拟器和设备。
 2. 打开「本地酒馆」，等待第一次校验和解包。之后直接复用已经解包的资源。
 3. 在酒馆原有的 API 连接面板选择服务，填写地址和 API Key，选择模型后聊天。电脑上的模型服务需填电脑的局域网 IP；手机内的 `127.0.0.1` 指手机自身。
 4. 通过原酒馆界面导入角色卡、世界书、聊天和预设。顶部 ☰ 提供扩展 ZIP 导入、备份恢复、日志和服务重启。
 
 首次解包、WebView 和大型角色库需要可用存储空间，建议至少预留 1.5 GB。模型本身不随 APK 提供。需要外部图片、TTS 或模型服务的功能仍使用相应服务。
+
+剪贴板文字读取：快捷回复粘贴和 `/clipboard-get` 读取前，会逐次弹出 Android「允许／取消」对话框。取消或离开页面会终止读取；现有复制功能保持可用。完整验证记录见 [VALIDATION.md](VALIDATION.md)。
 
 ## 扩展和插件
 
@@ -44,6 +46,8 @@
 - Node 编译缓存和角色卡磁盘缓存；上游在 Android 上关闭角色卡内存缓存，避免将全部角色常驻内存。Node 旧生代堆上限 384 MB，WASM 与外部分配不包含在此上限中。
 - SHA-256 标识的运行时目录只解包一次，升级后切换新资源，聊天和扩展目录保持独立。
 - 当前资源验证就绪后清理旧版本；中断的临时解包会在下次启动清理，避免每次升级永久增加约 340 MiB 存储。
+- 扩展常规更新只获取当前分支；进入分支管理时仍获取全部分支，网络空闲超时会中止停滞连接。
+- 消息正则深度扫描仅遍历后续消息，减少大聊天的重复计算及索引对象；实际 WebView 对照保留完整样本，尚未证明整体界面耗时改善。
 - 分 ABI 构建 APK；Node 和 JNI 库按 16 KB 页面对齐。
 
 本版未引入 Rust。保留完整 JavaScript 扩展环境比重写接口更重要；目前没有实机基准足以证明 Rust 重写会改善聊天体验。
@@ -79,6 +83,7 @@ npm test
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh
 npm run test:integration
+npm run test:features
 # 运行中的安卓模拟器：先 adb forward tcp:18768 tcp:18766
 TAVERN_TEST_URL=http://127.0.0.1:18768 TAVERN_TEST_API_HOST=10.0.2.2 npm run test:integration
 TAVERN_TEST_URL=http://127.0.0.1:18768 node scripts/smoke_extensions.mjs

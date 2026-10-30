@@ -1,0 +1,9 @@
+{
+  "verifiedAt": "2026-10-29T11:33:06.438866+00:00",
+  "device": "emulator-5554",
+  "method": "rmdir exact reported empty QA folder; no recursive deletion",
+  "directoriesRemoved": [
+    "characters/lt-features-1793273546821-46e34ffb5fc4-A"
+  ],
+  "passed": true
+}

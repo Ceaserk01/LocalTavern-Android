@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "startupMs": 34,
+  "runtime": "embedded Node; version recorded in runtime.log",
+  "driverRuntime": "v22.23.1",
+  "target": "http://127.0.0.1:18768",
+  "checks": [
+    "frontend",
+    "csrf",
+    "settings",
+    "character import/export + WASM image codec",
+    "worldbook",
+    "chat persistence",
+    "tiktoken WASM roundtrip",
+    "OpenAI-compatible API",
+    "SSE streaming"
+  ]
+}

@@ -68,7 +68,8 @@ async function prepareAdapter(t) {
     const stage = path.join(temporary, 'staged');
     await fs.mkdir(path.join(stage, 'src/git'), { recursive: true });
     await fs.mkdir(path.join(stage, 'src/endpoints'), { recursive: true });
-    for (const file of ['src/git/client.js', 'src/endpoints/extensions.js', 'src/plugin-loader.js', 'plugins.js']) {
+    await fs.mkdir(path.join(stage, 'public/scripts/extensions/tts'), { recursive: true });
+    for (const file of ['src/git/client.js', 'src/endpoints/extensions.js', 'src/plugin-loader.js', 'plugins.js', 'public/scripts/extensions/tts/system.js', 'public/script.js']) {
         await fs.copyFile(path.join(upstream, file), path.join(stage, file));
     }
     await fs.writeFile(path.join(stage, 'package.json'), '{"type":"module"}');
@@ -167,8 +168,10 @@ test('Android git adapter runs extension clone/update/version/branches through r
 // Forward a real smart-HTTP repository while controlling only transport timing.
 async function proxyGit(t, target, mode) {
     const stalled = [];
+    const active = [];
     const origin = new URL(target).origin;
     const server = http.createServer(async (request, response) => {
+        const requestedAt = performance.now();
         try {
             if (mode === 'headers' || (mode === 'body' && request.method === 'POST')) {
                 const transfer = { socket: response.socket, closed: false };
@@ -191,13 +194,19 @@ async function proxyGit(t, target, mode) {
             const body = Buffer.from(await result.arrayBuffer());
             response.writeHead(result.status, { 'Content-Type': result.headers.get('content-type'), 'Content-Length': body.length });
             if (mode === 'active') {
-                // Total transfer takes much longer than block timeout; continued
-                // network activity must keep it alive rather than hit a wall timer.
-                const size = Math.ceil(body.length / 8);
-                for (let offset = 0; offset < body.length; offset += size) {
-                    if (offset) await delay(35);
+                // Keep the real protocol payload intact, but spread each HTTP
+                // response across >3 seconds. A 1.5s idle deadline leaves ample
+                // room for backend-process startup and host scheduling without
+                // allowing an implementation with a total-request deadline.
+                const count = 32;
+                assert.ok(body.length >= count, 'Fixture has enough bytes for distinct active chunks');
+                const transfer = { method: request.method, responseBytes: body.length, requestedAt, writes: [] };
+                active.push(transfer);
+                for (let index = 0; index < count; index++) {
+                    if (index) await delay(100);
                     if (response.destroyed) return;
-                    response.write(body.subarray(offset, offset + size));
+                    response.write(body.subarray(Math.floor(index * body.length / count), Math.floor((index + 1) * body.length / count)));
+                    transfer.writes.push(performance.now());
                 }
                 response.end();
             } else response.end(body);
@@ -208,7 +217,7 @@ async function proxyGit(t, target, mode) {
         server.closeAllConnections();
         await new Promise(resolve => server.close(resolve));
     });
-    return { url: `http://127.0.0.1:${server.address().port}/fixture.git`, stalled };
+    return { url: `http://127.0.0.1:${server.address().port}/fixture.git`, stalled, active };
 }
 
 async function timeoutFixture(t) {
@@ -254,14 +263,26 @@ test('configured Git block timeout aborts silent headers and pack bodies for fet
     assert.equal(gitCommand(clone, 'rev-parse', 'HEAD'), before);
 });
 
-test('configured Git block timeout allows a slow transfer that keeps delivering data', { timeout: 10000 }, async t => {
+test('configured Git block timeout allows a slow transfer that keeps delivering data', { timeout: 20000 }, async t => {
     const { androidGit, clone, transport } = await timeoutFixture(t);
     const proxy = await proxyGit(t, transport.url, 'active');
     gitCommand(clone, 'config', 'remote.origin.url', proxy.url);
+    const blockTimeout = 1500;
     const start = performance.now();
-    await androidGit({ baseDir: clone, timeout: { block: 120 } }).fetch('origin');
+    await androidGit({ baseDir: clone, timeout: { block: blockTimeout } }).fetch('origin');
     const elapsed = performance.now() - start;
-    assert.ok(elapsed > 240, 'Total duration exceeds the timeout while active chunks extend the idle deadline');
+    assert.ok(proxy.active.some(transfer => transfer.method === 'POST'), 'Exercise the real Git pack response, not only its advertisement');
+    for (const transfer of proxy.active) {
+        assert.equal(transfer.writes.length, 32, 'Every scheduled nonempty payload chunk was sent');
+        const firstByte = transfer.writes[0] - transfer.requestedAt;
+        const span = transfer.writes.at(-1) - transfer.writes[0];
+        const gaps = transfer.writes.slice(1).map((at, index) => at - transfer.writes[index]);
+        const maxGap = Math.max(...gaps);
+        assert.ok(firstByte < blockTimeout, 'Backend startup completed within the inactivity deadline');
+        assert.ok(maxGap < blockTimeout, 'The fixture never deliberately went idle beyond the deadline');
+        assert.ok(span > blockTimeout * 2, 'Each individual response outlasts twice the idle deadline');
+        t.diagnostic(`${transfer.method} ${transfer.responseBytes} bytes in 32 chunks: first byte ${Math.round(firstByte)}ms, body span ${Math.round(span)}ms, maximum write gap ${Math.round(maxGap)}ms`);
+    }
     assert.equal(gitCommand(clone, 'status', '--porcelain'), '');
-    t.diagnostic(`Active Git transfer completed after ${Math.round(elapsed)}ms with a 120ms inactivity timeout`);
+    t.diagnostic(`Active Git transfer completed after ${Math.round(elapsed)}ms with a ${blockTimeout}ms inactivity timeout`);
 });

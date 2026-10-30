@@ -1,0 +1,187 @@
+{
+  "activityRecreatedForLazyTest": true,
+  "date": "2026-10-30T07:30:39.964Z",
+  "scope": "Real Android TextToSpeech service and native utterance callbacks on an API35 ARM64 headless emulator. Host emulator audio output is disabled, so this is not acoustic/physical speaker verification.",
+  "pid": "4370",
+  "version": "0.1.0-alpha.3",
+  "checks": {
+    "nativeShimPresent": true,
+    "lazyBeforeUse": true,
+    "realVoices": true,
+    "nativeServiceBound": true,
+    "shortNativeEnd": true,
+    "chineseNativeEnd": true,
+    "nativeInputSegmentation": true,
+    "upstreamProviderEnd": true,
+    "pauseResume": true,
+    "cancelStopsQueue": true,
+    "invalidVoiceRejected": true,
+    "navigationCleanup": true
+  },
+  "hello": [
+    {
+      "sourceNull": true,
+      "sourceWindow": false,
+      "origin": "",
+      "isTrusted": true,
+      "ports": 1,
+      "sessionLength": 36
+    }
+  ],
+  "initialCapabilities": {
+    "present": "object",
+    "native": true,
+    "pending": false,
+    "speaking": false
+  },
+  "bindingsBeforeFirstUse": false,
+  "voices": {
+    "latencyMs": 1315.899999999965,
+    "count": 442,
+    "providerCount": 442,
+    "chinese": {
+      "name": "cmn-cn-x-ccc-local",
+      "voiceURI": "android:com.google.android.tts:cmn-cn-x-ccc-local",
+      "lang": "zh-CN",
+      "localService": true
+    },
+    "chosen": {
+      "name": "en-AU-language",
+      "voiceURI": "android:com.google.android.tts:en-AU-language",
+      "lang": "en-AU",
+      "localService": true,
+      "default": false
+    }
+  },
+  "bindingsAfterFirstUse": true,
+  "short": {
+    "events": [
+      {
+        "type": "start",
+        "charIndex": 0
+      },
+      {
+        "type": "end",
+        "charIndex": 32,
+        "elapsedTime": 1.326
+      }
+    ],
+    "characters": 32,
+    "pending": false,
+    "speaking": false
+  },
+  "chinese": {
+    "available": true,
+    "events": [
+      {
+        "type": "start",
+        "charIndex": 0
+      },
+      {
+        "type": "end",
+        "charIndex": 12,
+        "elapsedTime": 1.321
+      }
+    ],
+    "characters": 12
+  },
+  "longInput": {
+    "characters": 4036,
+    "events": [
+      {
+        "type": "start",
+        "charIndex": 0
+      },
+      {
+        "type": "boundary",
+        "charIndex": 3990
+      },
+      {
+        "type": "boundary",
+        "charIndex": 3997
+      },
+      {
+        "type": "boundary",
+        "charIndex": 4010
+      },
+      {
+        "type": "boundary",
+        "charIndex": 4017
+      },
+      {
+        "type": "boundary",
+        "charIndex": 4026
+      },
+      {
+        "type": "end",
+        "charIndex": 4036,
+        "elapsedTime": 1.864
+      }
+    ],
+    "pending": false,
+    "speaking": false,
+    "fixture": "3,990 leading spaces plus 46 English characters; verifies engine input chunking, not long-speech throughput."
+  },
+  "provider": {
+    "milliseconds": 1439,
+    "status": 200,
+    "type": "audio/mpeg",
+    "pending": false,
+    "speaking": false
+  },
+  "pauseResume": {
+    "events": [
+      {
+        "type": "start",
+        "charIndex": 0
+      },
+      {
+        "type": "pause",
+        "charIndex": 2
+      },
+      {
+        "type": "resume",
+        "charIndex": 2
+      },
+      {
+        "type": "end",
+        "charIndex": 53
+      }
+    ],
+    "characters": 53,
+    "paused": false,
+    "pending": false,
+    "speaking": false
+  },
+  "cancel": {
+    "events": [
+      {
+        "name": "active",
+        "type": "error",
+        "error": "interrupted"
+      },
+      {
+        "name": "queued",
+        "type": "error",
+        "error": "canceled"
+      }
+    ],
+    "pending": false,
+    "speaking": false
+  },
+  "invalid": {
+    "error": "voice-unavailable",
+    "pending": false,
+    "speaking": false
+  },
+  "beforeNavigation": {
+    "started": true,
+    "speaking": true
+  },
+  "navigation": {
+    "newNativeHello": true,
+    "pending": false,
+    "speaking": false
+  },
+  "passed": true
+}

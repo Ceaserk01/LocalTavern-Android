@@ -1,0 +1,9 @@
+{
+  "version": "0.1.0-alpha.3",
+  "versionCode": 4,
+  "installedApkSha256": "094382cee051b732faf1b2550f76c05a3eedee709f3f737f530e50b1104b174d",
+  "matchesLocalSignedCandidate": true,
+  "atUtc": "2026-10-30T07:37:42.620881+00:00",
+  "device": "emulator-5554",
+  "scope": "The installed APK tested by the final native interaction, WebView depth, core backend and native TTS rechecks is byte-identical to this signed ARM64 build."
+}

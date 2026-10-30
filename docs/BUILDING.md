@@ -33,12 +33,48 @@ npm test
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh
 npm run test:integration
+npm run test:features
 ./scripts/build.sh --skip-prepare
 ```
 
 准备步骤检查固定的源码提交、运行时摘要、ABI 与 16 KB 页面对齐；使用上游 `package-lock.json` 执行 `npm ci`，在临时目录应用补丁并预编译前端。ZIP 安全测试实际流式生成和拒绝 512 MiB + 1 字节输入，需预留临时磁盘空间。
 
 `build.sh` 生成开发调试签名的 APK，用于本地测试。正式分发使用下面的发布步骤。重新准备时，原上游检出目录中的已跟踪文件必须与固定提交一致；修改适配层应放在 `runtime/`，避免将本机改动偷偷混入发行资源。
+
+`test:features` 使用独立数据目录运行实际后端，覆盖群聊、预设、快捷回复／主题文件、附件、头像及立绘；不连接付费模型。设置 `TAVERN_TEST_URL` 可以验证独立安卓测试实例，脚本仅清理自己的随机前缀资料。安卓立绘测试需显式设置 `TAVERN_TEST_SPRITES=1`，结束后按报告用 `rmdir` 删除唯一空目录，不能递归删除用户立绘目录。
+
+## 安卓界面验证
+
+后端基准和界面基准分开运行。实际 WebView 的开发者 socket 必须属于本应用 PID；不能用主机浏览器代替安卓界面。
+
+```sh
+TAVERN_UI_TEST_DISPOSABLE=1 \
+TAVERN_BENCH_ADB_SERIAL=emulator-5554 npm run benchmark:ui
+```
+
+界面驱动只接受显式选择的模拟器，验证 500／5000 条聊天、原分页配置、历史加载、编辑取消和合成草稿输入，保存原始时间及 V8 堆数据。双 rAF 表示绘制机会，合成输入排除系统键盘，均不能当作实体手机 FPS 或键盘延迟。`TAVERN_UI_PROFILE=1` 额外导出 CPU 采样，采样运行与未采样时间需分别报告。
+
+前端生成链路另用独立的本地模拟 API 验证：
+
+```sh
+TAVERN_UI_TEST_DISPOSABLE=1 \
+TAVERN_BENCH_ADB_SERIAL=emulator-5554 npm run test:ui-generation
+```
+
+驱动调用上游实际 Generate 流程，核对流式 DOM 更新与最终聊天保存。它仅接受测试模拟器，原设置和草稿保留在页面内存中，阻止测试期间的全局设置落盘，并向本地模拟 API 发送固定的假凭据；不连接付费模型。它会临时切换测试角色，因此应在专用、可丢弃的模拟器运行。
+
+原生焦点、按键、剪贴板的独立测试使用测试专用 Instrumentation APK；只编译时运行 `./scripts/test_android_interaction.sh --build-only`。显式运行还需上文的模拟器标识，以及下文与目标 APK 相同的四个签名环境变量：
+
+```sh
+TAVERN_UI_TEST_DISPOSABLE=1 \
+TAVERN_BENCH_ADB_SERIAL=emulator-5554 \
+TAVERN_INTERACTION_CLIPBOARD_CONSENT=1 \
+./scripts/test_android_interaction.sh --run
+```
+
+`TAVERN_INTERACTION_CLIPBOARD_CONSENT=1` 允许测试逐次核对本应用剪贴板对话框的包名、标题、说明及按钮后，验证取消与允许；还会验证原有写入功能。首次欢迎向导需另行显式设置 `TAVERN_INTERACTION_ONBOARDING=1` 才会点击其确定按钮，该选择可能持久化向导完成状态。
+
+该工具会通过 Android Instrumentation 重启目标进程，只能用于可丢弃的测试模拟器。它不输出原剪贴板或草稿内容，退出时删除自己的测试包并重新打开 App；不要依赖原未发送草稿跨测试进程结束后存活。它不会写入公开发布的 APK，也不需要增加生产依赖或通用 JavaScript-Java 桥。
 
 ## 生成正式签名的测试发行版
 

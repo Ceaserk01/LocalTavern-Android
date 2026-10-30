@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "fixture": "ltgen_ba9470ffe94e4874",
+  "completed": true,
+  "startedAt": "2026-10-30T07:38:26.146Z",
+  "scope": "Disposable own-app WebView extension API invokes actual upstream Generate, mock OpenAI SSE transport, stream rendering and chat persistence. CDP userGesture/synthetic actions do not establish trusted touch or IME. No paid API or original secret is sent to the mock.",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "workload": {
+    "actualFrontendGeneration": true,
+    "mockOnly": true
+  },
+  "measurements": {
+    "solo": {
+      "elapsedMs": 1729.2999999999302,
+      "chatId": "ltgen_ba9470ffe94e4874 - 2026-10-30@15h38m26s790ms",
+      "messageCount": 3,
+      "finalText": "ltgen_ba9470ffe94e4874 answer 1: 本地流式成功。",
+      "domMatches": true,
+      "partialRenderCount": 3,
+      "sendReset": true,
+      "savesObserved": 4,
+      "savedFinalMatches": true
+    }
+  },
+  "cleanup": {
+    "pageRestored": true,
+    "characterDeleted": true,
+    "backupsDeleted": 2,
+    "forwardsRemoved": 2,
+    "errors": [],
+    "page": {
+      "restored": true,
+      "settingsWritesBlocked": 1,
+      "ownedChatSaveWrites": 4,
+      "msSinceLastOwnedChatSave": 255.90000000002328
+    },
+    "noOwnedFixturesRemain": true,
+    "persistedSettingsByteExact": true
+  },
+  "target": {
+    "packageName": "app.local.tavern",
+    "serial": "emulator-5554",
+    "mainPid": 4370,
+    "apiLevel": "35",
+    "abi": "arm64-v8a",
+    "emulator": true,
+    "debuggerSocket": "localabstract:webview_devtools_remote_4370",
+    "origin": "http://127.0.0.1:18766",
+    "apk": [
+      "versionCode=4 minSdk=26 targetSdk=35",
+      "versionName=0.1.0-alpha.3"
+    ],
+    "webview": {
+      "captured": true,
+      "appReady": true,
+      "settingsKeptInPageMemoryOnly": true
+    }
+  },
+  "mock": [
+    {
+      "stream": true,
+      "fakeAuthorization": true,
+      "ownPrompt": true,
+      "model": "gpt-4"
+    }
+  ],
+  "finishedAt": "2026-10-30T07:38:41.167Z"
+}

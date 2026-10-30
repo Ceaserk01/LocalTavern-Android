@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "fixture": "ltui_c8f922128cd841ec",
+  "completed": true,
+  "startedAt": "2026-10-30T07:27:46.833Z",
+  "scope": "Actual own-app Android WebView via its PID-bound developer socket; upstream chat open/render/edit paths. Two rAF callbacks indicate drawing opportunities, not screen presentation. Synthetic input is not IME or trusted input latency. No physical-phone or GPU FPS claim.",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "workload": {
+    "messageCounts": [
+      500,
+      5000
+    ],
+    "repeatsAfterFirstOpen": 3,
+    "olderMessageBatch": 100
+  },
+  "measurements": {
+    "opens": [
+      {
+        "messageCount": 500,
+        "first": {
+          "operation": "selectCharacterById",
+          "messageCount": 500,
+          "chatChangedMs": 556.7999999999884,
+          "actionCompletedMs": 557.0999999999767,
+          "twoFramesAfterActionMs": 646.6999999999825,
+          "dom": {
+            "count": 100,
+            "firstId": 400,
+            "lastId": 499,
+            "showMore": true
+          },
+          "longTaskSupported": true,
+          "longTasks": [
+            {
+              "startTime": 10679.600000000006,
+              "duration": 341
+            },
+            {
+              "startTime": 11138.899999999994,
+              "duration": 62
+            }
+          ],
+          "actionStartToFirstFrameMs": 2.1999999999825377,
+          "frameGapsMs": [
+            16.700000000000728,
+            16.599999999998545,
+            16.700000000000728,
+            16.700000000000728,
+            16.69999999999891,
+            16.600000000000364,
+            16.700000000000728,
+            366.59999999999854,
+            33.400000000001455,
+            16.599999999998545,
+            16.700000000000728,
+            16.700000000000728
+          ],
+          "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+          "cacheLabel": "First fixture open observed in this run; existing WebView/V8/cache state is not reset",
+          "heapAfter": {
+            "usedSize": 18989016,
+            "totalSize": 36970496
+          }
+        },
+        "repeated": [
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 500,
+            "chatChangedMs": 891.8000000000175,
+            "actionCompletedMs": 1061.7000000000116,
+            "twoFramesAfterActionMs": 1085.2000000000116,
+            "dom": {
+              "count": 100,
+              "firstId": 400,
+              "lastId": 499,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 11353.5,
+                "duration": 118
+              },
+              {
+                "startTime": 11630,
+                "duration": 503
+              }
+            ],
+            "actionStartToFirstFrameMs": -15.89999999999418,
+            "frameGapsMs": [
+              16.700000000000728,
+              16.69999999999891,
+              16.700000000000728,
+              249.89999999999964,
+              16.700000000000728,
+              16.599999999998545,
+              16.700000000000728,
+              16.600000000000364,
+              33.399999999999636,
+              16.700000000000728,
+              466.59999999999854,
+              116.70000000000073,
+              16.700000000000728,
+              50,
+              16.69999999999891,
+              16.600000000000364
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 18395020,
+              "totalSize": 38019072
+            }
+          },
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 500,
+            "chatChangedMs": 297.1000000000058,
+            "actionCompletedMs": 431.6000000000058,
+            "twoFramesAfterActionMs": 460,
+            "dom": {
+              "count": 100,
+              "firstId": 400,
+              "lastId": 499,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 12359.100000000006,
+                "duration": 267
+              }
+            ],
+            "actionStartToFirstFrameMs": 8.300000000006548,
+            "frameGapsMs": [
+              16.69999999999891,
+              16.600000000000364,
+              266.7000000000007,
+              66.69999999999891,
+              33.30000000000109,
+              16.69999999999891,
+              16.600000000000364,
+              16.700000000000728
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 20356820,
+              "totalSize": 38019072
+            }
+          },
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 500,
+            "chatChangedMs": 342.6000000000058,
+            "actionCompletedMs": 478,
+            "twoFramesAfterActionMs": 510.29999999998836,
+            "dom": {
+              "count": 100,
+              "firstId": 400,
+              "lastId": 499,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 12831.5,
+                "duration": 307
+              }
+            ],
+            "actionStartToFirstFrameMs": 8.299999999993815,
+            "frameGapsMs": [
+              16.600000000000364,
+              16.700000000000728,
+              316.6999999999989,
+              33.30000000000109,
+              16.69999999999891,
+              49.899999999999636,
+              16.700000000000728,
+              16.700000000000728,
+              16.69999999999891
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 17080456,
+              "totalSize": 38281216
+            }
+          }
+        ],
+        "repeatedSummary": {
+          "chatChanged": {
+            "samples": 3,
+            "minMs": 297.1,
+            "p50Ms": 342.6,
+            "p95Ms": 891.8,
+            "maxMs": 891.8
+          },
+          "actionTwoFrames": {
+            "samples": 3,
+            "minMs": 460,
+            "p50Ms": 510.3,
+            "p95Ms": 1085.2,
+            "maxMs": 1085.2
+          }
+        }
+      },
+      {
+        "messageCount": 5000,
+        "first": {
+          "operation": "openCharacterChat",
+          "messageCount": 5000,
+          "chatChangedMs": 451.29999999998836,
+          "actionCompletedMs": 509.8999999999942,
+          "twoFramesAfterActionMs": 542.5,
+          "dom": {
+            "count": 100,
+            "firstId": 4900,
+            "lastId": 4999,
+            "showMore": true
+          },
+          "longTaskSupported": true,
+          "longTasks": [
+            {
+              "startTime": 13423.899999999994,
+              "duration": 250
+            }
+          ],
+          "actionStartToFirstFrameMs": 7.399999999994179,
+          "frameGapsMs": [
+            16.700000000000728,
+            16.599999999998545,
+            16.80000000000109,
+            16.600000000000364,
+            16.599999999998545,
+            16.700000000000728,
+            16.700000000000728,
+            250,
+            16.69999999999891,
+            16.600000000000364,
+            33.399999999999636,
+            16.600000000000364,
+            33.29999999999927,
+            16.700000000000728,
+            16.600000000000364,
+            16.69999999999891
+          ],
+          "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+          "cacheLabel": "First fixture open observed in this run; existing WebView/V8/cache state is not reset",
+          "heapAfter": {
+            "usedSize": 20069308,
+            "totalSize": 40378368
+          }
+        },
+        "repeated": [
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 5000,
+            "chatChangedMs": 389.70000000001164,
+            "actionCompletedMs": 515.7000000000116,
+            "twoFramesAfterActionMs": 541,
+            "dom": {
+              "count": 100,
+              "firstId": 4900,
+              "lastId": 4999,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 13978.899999999994,
+                "duration": 276
+              }
+            ],
+            "actionStartToFirstFrameMs": 6.399999999994179,
+            "frameGapsMs": [
+              16.700000000000728,
+              16.599999999998545,
+              16.80000000000109,
+              16.600000000000364,
+              16.69999999999891,
+              16.700000000000728,
+              16.600000000000364,
+              283.2999999999993,
+              33.29999999999927,
+              16.700000000000728,
+              33.29999999999927,
+              16.700000000000728,
+              16.700000000000728,
+              16.599999999998545
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 22882240,
+              "totalSize": 42999808
+            }
+          },
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 5000,
+            "chatChangedMs": 434.69999999998254,
+            "actionCompletedMs": 560,
+            "twoFramesAfterActionMs": 593.5999999999767,
+            "dom": {
+              "count": 100,
+              "firstId": 4900,
+              "lastId": 4999,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 14532.800000000017,
+                "duration": 314
+              }
+            ],
+            "actionStartToFirstFrameMs": 7.699999999982538,
+            "frameGapsMs": [
+              16.700000000000728,
+              16.599999999998545,
+              16.700000000000728,
+              16.700000000000728,
+              16.69999999999891,
+              16.600000000000364,
+              16.700000000000728,
+              316.59999999999854,
+              50,
+              16.80000000000109,
+              33.29999999999927,
+              16.600000000000364,
+              16.700000000000728,
+              16.69999999999891
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 25695404,
+              "totalSize": 45621248
+            }
+          },
+          {
+            "operation": "openCharacterChat",
+            "messageCount": 5000,
+            "chatChangedMs": 420,
+            "actionCompletedMs": 575.1000000000058,
+            "twoFramesAfterActionMs": 592,
+            "dom": {
+              "count": 100,
+              "firstId": 4900,
+              "lastId": 4999,
+              "showMore": true
+            },
+            "longTaskSupported": true,
+            "longTasks": [
+              {
+                "startTime": 15150.700000000012,
+                "duration": 284
+              }
+            ],
+            "actionStartToFirstFrameMs": 6.399999999994179,
+            "frameGapsMs": [
+              16.700000000000728,
+              16.599999999998545,
+              16.700000000000728,
+              33.399999999999636,
+              33.30000000000109,
+              16.69999999999891,
+              300,
+              33.20000000000073,
+              16.799999999999272,
+              33.30000000000109,
+              33.29999999999927,
+              16.700000000000728,
+              16.599999999998545
+            ],
+            "frameScope": "rAF callback intervals in the target document during this action; not GPU FPS or display presentation",
+            "cacheLabel": "Repeated open in the same live WebView",
+            "heapAfter": {
+              "usedSize": 20508500,
+              "totalSize": 48242688
+            }
+          }
+        ],
+        "repeatedSummary": {
+          "chatChanged": {
+            "samples": 3,
+            "minMs": 389.7,
+            "p50Ms": 420,
+            "p95Ms": 434.7,
+            "maxMs": 434.7
+          },
+          "actionTwoFrames": {
+            "samples": 3,
+            "minMs": 541,
+            "p50Ms": 592,
+            "p95Ms": 593.6,
+            "maxMs": 593.6
+          }
+        }
+      }
+    ],
+    "interactions": {
+      "olderMessages": {
+        "batchRequested": 100,
+        "added": 100,
+        "before": {
+          "count": 100,
+          "firstId": 4900,
+          "lastId": 4999,
+          "showMore": true
+        },
+        "after": {
+          "count": 200,
+          "firstId": 4800,
+          "lastId": 4999,
+          "showMore": true
+        },
+        "twoFramesAfterActionMs": 318.3999999999942
+      },
+      "syntheticDraft": {
+        "samples": 10,
+        "dispatchMs": [
+          4.100000000005821,
+          2.5,
+          6.899999999994179,
+          2.6999999999825377,
+          4.399999999994179,
+          2.6000000000058208,
+          3.1000000000058208,
+          4.199999999982538,
+          5,
+          3
+        ],
+        "nextFrameMs": [
+          37,
+          17,
+          8.800000000017462,
+          29.29999999998836,
+          47.79999999998836,
+          55.30000000001746,
+          40.10000000000582,
+          42.5,
+          39.69999999998254,
+          35.30000000001746
+        ],
+        "scope": "Programmatic textarea value/input dispatch and next rAF in the same WebView; excludes OS keyboard, trusted input and visual presentation"
+      },
+      "messageEdit": {
+        "openTwoFramesMs": 191.90000000002328,
+        "cancelTwoFramesMs": 414.5,
+        "unchanged": true
+      }
+    }
+  },
+  "cleanup": {
+    "pageRestored": true,
+    "characterDeleted": true,
+    "backupsDeleted": 0,
+    "forwardsRemoved": 2,
+    "errors": [],
+    "page": {
+      "restored": true,
+      "settingsPreserved": true,
+      "ownedChatSaveWrites": 0,
+      "msSinceLastOwnedChatSave": null
+    },
+    "noOwnedFixturesRemain": true
+  },
+  "target": {
+    "packageName": "app.local.tavern",
+    "serial": "emulator-5554",
+    "mainPid": 4370,
+    "apiLevel": "35",
+    "abi": "arm64-v8a",
+    "emulator": true,
+    "debuggerSocket": "localabstract:webview_devtools_remote_4370",
+    "origin": "http://127.0.0.1:18766",
+    "apk": [
+      "versionCode=4 minSdk=26 targetSdk=35",
+      "versionName=0.1.0-alpha.3"
+    ],
+    "webview": {
+      "userAgent": "Mozilla/5.0 (Linux; Android 15; sdk_gphone64_arm64 Build/AE3A.240806.043; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.219 Mobile Safari/537.36",
+      "viewport": {
+        "width": 412,
+        "height": 795,
+        "devicePixelRatio": 2.625
+      },
+      "configuredChatTruncation": 100,
+      "defaultChatTruncation": true,
+      "fastUiMode": true,
+      "noBlurClass": true,
+      "streamingFps": 30,
+      "visibility": "visible",
+      "noOpenDialog": true,
+      "appReady": true,
+      "regexDepthAlgorithm": "tail-scan",
+      "performanceEntriesSupported": [
+        "element",
+        "event",
+        "first-input",
+        "largest-contentful-paint",
+        "layout-shift",
+        "long-animation-frame",
+        "longtask",
+        "mark",
+        "measure",
+        "navigation",
+        "paint",
+        "resource",
+        "visibility-state"
+      ]
+    }
+  },
+  "fixtureChats": [
+    {
+      "count": 500,
+      "chatName": "ltui_c8f922128cd841ec_500 - 2026-10-30@15h27m47s336ms imported",
+      "utf8Bytes": 214540,
+      "sha256": "398fc5dfaba5b2a40530da4e9511f7e543419bed2dcb11eb8344f96c7fbe4e41"
+    },
+    {
+      "count": 5000,
+      "chatName": "ltui_c8f922128cd841ec_5000 - 2026-10-30@15h27m47s421ms imported",
+      "utf8Bytes": 2149015,
+      "sha256": "8eb5e6a6baa2b4c86306cd991ce21eb7cf9710e75abc5df7c7e61e3fb0ddf47d"
+    }
+  ],
+  "heapScope": "CDP Runtime.getHeapUsage for the inspected WebView V8 isolate; not total renderer PSS or device memory",
+  "heapBefore": {
+    "usedSize": 19224700,
+    "totalSize": 34611200
+  },
+  "heapAfter": {
+    "usedSize": 20136184,
+    "totalSize": 48242688
+  },
+  "finishedAt": "2026-10-30T07:27:54.251Z"
+}

@@ -23,6 +23,8 @@ public final class MainActivity extends Activity {
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final ExecutorService io = Executors.newSingleThreadExecutor();
     private WebView web;
+    private NativeTtsController nativeTts;
+    private NativeClipboardController nativeClipboard;
     private LinearLayout boot;
     private TextView status;
     private ProgressBar progress;
@@ -53,7 +55,7 @@ public final class MainActivity extends Activity {
         Button menu = button("☰", v -> showMenu()); menu.setContentDescription("本地酒馆管理：扩展、备份和运行状态"); toolbar.addView(menu,new LinearLayout.LayoutParams(dp(52),dp(44))); root.addView(toolbar);
         progress = new ProgressBar(this,null,android.R.attr.progressBarStyleHorizontal); progress.setIndeterminate(true); root.addView(progress,new LinearLayout.LayoutParams(-1,dp(2)));
         FrameLayout content = new FrameLayout(this); root.addView(content,new LinearLayout.LayoutParams(-1,0,1));
-        web = new WebView(this); content.addView(web,new FrameLayout.LayoutParams(-1,-1)); configureWebView(); web.setVisibility(View.GONE);
+        web = new WebView(this); nativeTts = new NativeTtsController(this); nativeClipboard = new NativeClipboardController(this); content.addView(web,new FrameLayout.LayoutParams(-1,-1)); configureWebView(); web.setVisibility(View.GONE);
         boot = new LinearLayout(this); boot.setOrientation(LinearLayout.VERTICAL); boot.setGravity(Gravity.CENTER); boot.setPadding(dp(28),dp(24),dp(28),dp(24));
         boot.addView(text("你的酒馆，在手机里",24));
         TextView hint = text("安装后直接运行 · 角色与聊天留在本机",14); hint.setPadding(0,dp(12),0,dp(24)); boot.addView(hint);
@@ -85,12 +87,19 @@ public final class MainActivity extends Activity {
                 return true;
             }
             @Override public void onPageStarted(WebView view,String url,android.graphics.Bitmap icon) {
+                nativeTts.detach();
+                nativeClipboard.detach();
                 if (blobKey!=null && !url.startsWith("blob:")) clearDownload();
                 progress.setVisibility(View.VISIBLE);
             }
-            @Override public void onPageFinished(WebView view,String url) { progress.setVisibility(View.GONE); CookieManager.getInstance().flush(); }
+            @Override public void onPageFinished(WebView view,String url) {
+                progress.setVisibility(View.GONE); CookieManager.getInstance().flush();
+                if (!closing && isLocal(Uri.parse(url)) && url.equals(view.getUrl())) {
+                    nativeTts.attach(view); nativeClipboard.attach(view);
+                }
+            }
             @Override public void onReceivedError(WebView view,WebResourceRequest request,WebResourceError e) {
-                if (request.isForMainFrame()) { ready=false; web.setVisibility(View.GONE); boot.setVisibility(View.VISIBLE); status.setText("本地页面暂时不可用。请查看日志或重启服务。"); progress.setVisibility(View.GONE); }
+                if (request.isForMainFrame()) { nativeClipboard.detach(); ready=false; web.setVisibility(View.GONE); boot.setVisibility(View.VISIBLE); status.setText("本地页面暂时不可用。请查看日志或重启服务。"); progress.setVisibility(View.GONE); }
             }
             @Override public void onReceivedSslError(WebView view,android.webkit.SslErrorHandler handler,android.net.http.SslError error) { handler.cancel(); }
         });
@@ -412,12 +421,14 @@ public final class MainActivity extends Activity {
         if(request==MIC && microphone!=null) { if(result.length>0 && result[0]==PackageManager.PERMISSION_GRANTED) microphone.grant(new String[]{PermissionRequest.RESOURCE_AUDIO_CAPTURE}); else microphone.deny(); microphone=null; }
     }
     @Override public void onBackPressed() { if(busy) { toast("正在处理文件，请稍候"); return; } if(web.canGoBack()) web.goBack(); else moveTaskToBack(true); }
-    @Override protected void onResume() { super.onResume(); resumed=true; if(web!=null) web.onResume(); ui.removeCallbacks(resumeRuntimeCheck); ui.post(resumeRuntimeCheck); }
-    @Override protected void onPause() { resumed=false; ui.removeCallbacks(resumeRuntimeCheck); if(web!=null) {web.onPause();CookieManager.getInstance().flush();} super.onPause(); }
+    @Override protected void onResume() { super.onResume(); resumed=true; if(nativeClipboard!=null) nativeClipboard.setForeground(true); if(web!=null) web.onResume(); ui.removeCallbacks(resumeRuntimeCheck); ui.post(resumeRuntimeCheck); }
+    @Override protected void onPause() { resumed=false; if(nativeClipboard!=null) nativeClipboard.setForeground(false); ui.removeCallbacks(resumeRuntimeCheck); if(web!=null) {web.onPause();CookieManager.getInstance().flush();} super.onPause(); }
     @Override protected void onDestroy() {
         closing=true;ui.removeCallbacksAndMessages(null);
         if(upload!=null) upload.onReceiveValue(null);if(microphone!=null) microphone.deny();
         clearDownload();
+        if(nativeTts!=null) nativeTts.destroy();
+        if(nativeClipboard!=null) nativeClipboard.destroy();
         if(web!=null) {web.stopLoading();web.destroy();} io.shutdown();super.onDestroy();
     }
     private int dp(int value) { return Math.round(value*getResources().getDisplayMetrics().density); }

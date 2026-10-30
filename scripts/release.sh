@@ -34,7 +34,9 @@ npm test
 ./scripts/test_archive.sh
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh
+./scripts/test_android_interaction.sh --build-only
 npm run test:integration
+npm run test:features
 if [[ -x .tooling/gradle-8.11.1/bin/gradle ]]; then
   task_gradle=.tooling/gradle-8.11.1/bin/gradle
 else
