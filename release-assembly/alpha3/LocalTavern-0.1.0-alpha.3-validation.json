@@ -1,0 +1,409 @@
+{
+  "version": "0.1.0-alpha.3",
+  "sourceCommit": "e557b2515f7c14afa7a9f66abb3cf3edce776e1d",
+  "atUtc": "2026-10-30T07:49:46.969978+00:00",
+  "finalInstalledArm64Sha256": "97ff4b3a292829b8047cec129d648db5312c581da43684006ea204df694ba43f",
+  "finalInstalledMatchesReleaseFile": true,
+  "candidateToReleaseComparison": {
+    "allProgramNativeLibraryAndResourceContentsEqual": true,
+    "changedZipEntries": [
+      "META-INF/CERT.RSA",
+      "META-INF/CERT.SF",
+      "META-INF/MANIFEST.MF",
+      "META-INF/version-control-info.textproto"
+    ],
+    "reason": "Android Gradle Plugin updated the embedded Git revision after source commit, which also changes signatures. The final release APK was then installed and rechecked."
+  },
+  "checks": {
+    "nativeInteraction": {
+      "androidApi": 35,
+      "blockingDialogObservedDuringSetup": true,
+      "knownOnboardingPresent": false,
+      "onboardingCompletedByTest": false,
+      "appReadyObserved": true,
+      "settingsReadyObserved": true,
+      "loaderBlockingDuringSetup": false,
+      "inputReadyDuringSetup": true,
+      "unobstructedStableMs": 332,
+      "noActiveGenerationOrEditor": true,
+      "localOriginVerified": true,
+      "textareaDisabled": false,
+      "textareaReadOnly": false,
+      "textareaHasSize": true,
+      "textareaHitAtCenter": true,
+      "hardwareKeyboardPresent": false,
+      "nativeWebViewX": 0,
+      "nativeWebViewY": 252,
+      "nativeWebViewWidth": 1080,
+      "nativeWebViewHeight": 2085,
+      "cssViewportWidth": 412,
+      "cssViewportHeight": 795,
+      "nativeTapX": 277.86407470703125,
+      "nativeTapY": 356.9056701660156,
+      "nativeWebViewFocused": true,
+      "nativeWindowFocused": true,
+      "documentFocused": true,
+      "textareaActive": true,
+      "trustedTextareaTap": true,
+      "imeVisibleImmediatelyAfterTap": false,
+      "imeVisibleAfterTap": true,
+      "imeVisibleAfterAutomaticWait": true,
+      "imeVisibleAfterExplicitRequest": true,
+      "imeAcceptingText": true,
+      "nativeTypingMatches": true,
+      "trustedInputEvent": true,
+      "clipboardConsentEnabled": true,
+      "clipboardWriteSupported": true,
+      "clipboardWriteTrustedTap": true,
+      "clipboardWriteDocumentFocused": true,
+      "clipboardWriteUserActivation": true,
+      "clipboardWriteSucceeded": true,
+      "clipboardWriteErrorName": "",
+      "clipboardWriteMatchesFixture": true,
+      "clipboardDenyDialogVerified": true,
+      "clipboardDenyActionPerformed": true,
+      "clipboardDenyTrustedTap": true,
+      "clipboardDenyDocumentFocused": true,
+      "clipboardDenyUserActivation": true,
+      "clipboardDenyErrorName": "NotAllowedError",
+      "clipboardDenyRejected": true,
+      "clipboardUnchangedAfterDeny": true,
+      "clipboardAllowDialogVerified": true,
+      "clipboardAllowActionPerformed": true,
+      "clipboardReadSupported": true,
+      "clipboardTrustedTap": true,
+      "clipboardDocumentFocused": true,
+      "clipboardUserActivation": true,
+      "clipboardReadMatchesFixture": true,
+      "clipboardErrorName": "",
+      "clipboardConsentCleanupComplete": true,
+      "guestClipboardRestored": true,
+      "draftRestored": true,
+      "imeStateRestored": true,
+      "passed": true,
+      "errorCode": "",
+      "phase": "guestClipboard",
+      "instrumentationFinishedSuccessfully": true,
+      "ownedTestPackageRemoved": true,
+      "targetActivityRelaunched": true,
+      "atUtc": "2026-10-30T07:47:42.468473+00:00",
+      "device": "emulator-5554",
+      "scope": "Native Android instrumentation on an explicitly disposable emulator; no physical-device guarantee."
+    },
+    "coreBackend": {
+      "passed": true,
+      "startupMs": 23,
+      "runtime": "embedded Node; version recorded in runtime.log",
+      "driverRuntime": "v22.23.1",
+      "target": "http://127.0.0.1:18768",
+      "checks": [
+        "frontend",
+        "csrf",
+        "settings",
+        "character import/export + WASM image codec",
+        "worldbook",
+        "chat persistence",
+        "tiktoken WASM roundtrip",
+        "OpenAI-compatible API",
+        "SSE streaming"
+      ]
+    },
+    "frontendGeneration": {
+      "schemaVersion": 1,
+      "fixture": "ltgen_7cbc575726494277",
+      "completed": true,
+      "startedAt": "2026-10-30T07:48:03.334Z",
+      "scope": "Disposable own-app WebView extension API invokes actual upstream Generate, mock OpenAI SSE transport, stream rendering and chat persistence. CDP userGesture/synthetic actions do not establish trusted touch or IME. No paid API or original secret is sent to the mock.",
+      "driver": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "workload": {
+        "actualFrontendGeneration": true,
+        "mockOnly": true,
+        "twoMemberListGroup": true,
+        "inMemoryQuickReplyExecution": true
+      },
+      "measurements": {
+        "solo": {
+          "elapsedMs": 1732.5,
+          "chatId": "ltgen_7cbc575726494277 - 2026-10-30@15h48m03s812ms",
+          "messageCount": 3,
+          "finalText": "ltgen_7cbc575726494277 answer 1: 本地流式成功。",
+          "domMatches": true,
+          "partialRenderCount": 3,
+          "sendReset": true,
+          "savesObserved": 4,
+          "savedFinalMatches": true
+        },
+        "quickReply": {
+          "actualQuickReplyClasses": true,
+          "macroExpanded": true,
+          "slashCommandPipeMatches": true,
+          "inMemoryOnly": true
+        },
+        "group": {
+          "elapsedMs": 2932.399999999907,
+          "chatId": "ltgen_7cbc575726494277_groupchat",
+          "members": [
+            "ltgen_7cbc575726494277",
+            "ltgen_7cbc575726494277_B"
+          ],
+          "texts": [
+            "ltgen_7cbc575726494277 answer 2: 本地流式成功。",
+            "ltgen_7cbc575726494277 answer 3: 本地流式成功。"
+          ],
+          "domContainsBothReplies": true,
+          "sendReset": true,
+          "savedBothFinalMatches": true
+        }
+      },
+      "cleanup": {
+        "pageRestored": true,
+        "characterDeleted": true,
+        "backupsDeleted": 4,
+        "forwardsRemoved": 2,
+        "errors": [],
+        "page": {
+          "restored": true,
+          "settingsWritesBlocked": 2,
+          "ownedChatSaveWrites": 9,
+          "msSinceLastOwnedChatSave": 365.19999999995343
+        },
+        "charactersDeleted": 2,
+        "groupsDeleted": 1,
+        "noOwnedFixturesRemain": true,
+        "persistedSettingsByteExact": true
+      },
+      "target": {
+        "packageName": "app.local.tavern",
+        "serial": "emulator-5554",
+        "mainPid": 5870,
+        "apiLevel": "35",
+        "abi": "arm64-v8a",
+        "emulator": true,
+        "debuggerSocket": "localabstract:webview_devtools_remote_5870",
+        "origin": "http://127.0.0.1:18766",
+        "apk": [
+          "versionCode=4 minSdk=26 targetSdk=35",
+          "versionName=0.1.0-alpha.3"
+        ],
+        "webview": {
+          "captured": true,
+          "appReady": true,
+          "settingsKeptInPageMemoryOnly": true
+        }
+      },
+      "mock": [
+        {
+          "stream": true,
+          "fakeAuthorization": true,
+          "ownPrompt": true,
+          "model": "gpt-4"
+        },
+        {
+          "stream": true,
+          "fakeAuthorization": true,
+          "ownPrompt": true,
+          "model": "gpt-4"
+        },
+        {
+          "stream": true,
+          "fakeAuthorization": true,
+          "ownPrompt": true,
+          "model": "gpt-4"
+        }
+      ],
+      "finishedAt": "2026-10-30T07:48:20.853Z"
+    },
+    "nativeTts": {
+      "activityRecreatedForLazyTest": true,
+      "date": "2026-10-30T07:48:21.261Z",
+      "scope": "Real Android TextToSpeech service and native utterance callbacks on an API35 ARM64 headless emulator. Host emulator audio output is disabled, so this is not acoustic/physical speaker verification.",
+      "pid": "5870",
+      "version": "0.1.0-alpha.3",
+      "checks": {
+        "nativeShimPresent": true,
+        "lazyBeforeUse": true,
+        "realVoices": true,
+        "nativeServiceBound": true,
+        "shortNativeEnd": true,
+        "chineseNativeEnd": true,
+        "nativeInputSegmentation": true,
+        "upstreamProviderEnd": true,
+        "pauseResume": true,
+        "cancelStopsQueue": true,
+        "invalidVoiceRejected": true,
+        "navigationCleanup": true
+      },
+      "hello": [
+        {
+          "sourceNull": true,
+          "sourceWindow": false,
+          "origin": "",
+          "isTrusted": true,
+          "ports": 1,
+          "sessionLength": 36
+        }
+      ],
+      "initialCapabilities": {
+        "present": "object",
+        "native": true,
+        "pending": false,
+        "speaking": false
+      },
+      "bindingsBeforeFirstUse": false,
+      "voices": {
+        "latencyMs": 1539.6000000000931,
+        "count": 442,
+        "providerCount": 442,
+        "chinese": {
+          "name": "cmn-cn-x-ccc-local",
+          "voiceURI": "android:com.google.android.tts:cmn-cn-x-ccc-local",
+          "lang": "zh-CN",
+          "localService": true
+        },
+        "chosen": {
+          "name": "en-AU-language",
+          "voiceURI": "android:com.google.android.tts:en-AU-language",
+          "lang": "en-AU",
+          "localService": true,
+          "default": false
+        }
+      },
+      "bindingsAfterFirstUse": true,
+      "short": {
+        "events": [
+          {
+            "type": "start",
+            "charIndex": 0
+          },
+          {
+            "type": "end",
+            "charIndex": 32,
+            "elapsedTime": 1.357
+          }
+        ],
+        "characters": 32,
+        "pending": false,
+        "speaking": false
+      },
+      "chinese": {
+        "available": true,
+        "events": [
+          {
+            "type": "start",
+            "charIndex": 0
+          },
+          {
+            "type": "end",
+            "charIndex": 12,
+            "elapsedTime": 1.536
+          }
+        ],
+        "characters": 12
+      },
+      "longInput": {
+        "characters": 4036,
+        "events": [
+          {
+            "type": "start",
+            "charIndex": 0
+          },
+          {
+            "type": "boundary",
+            "charIndex": 3990
+          },
+          {
+            "type": "boundary",
+            "charIndex": 3997
+          },
+          {
+            "type": "boundary",
+            "charIndex": 4010
+          },
+          {
+            "type": "boundary",
+            "charIndex": 4017
+          },
+          {
+            "type": "boundary",
+            "charIndex": 4026
+          },
+          {
+            "type": "end",
+            "charIndex": 4036,
+            "elapsedTime": 1.893
+          }
+        ],
+        "pending": false,
+        "speaking": false,
+        "fixture": "3,990 leading spaces plus 46 English characters; verifies engine input chunking, not long-speech throughput."
+      },
+      "provider": {
+        "milliseconds": 1438.1999999999534,
+        "status": 200,
+        "type": "audio/mpeg",
+        "pending": false,
+        "speaking": false
+      },
+      "pauseResume": {
+        "events": [
+          {
+            "type": "start",
+            "charIndex": 0
+          },
+          {
+            "type": "pause",
+            "charIndex": 2
+          },
+          {
+            "type": "resume",
+            "charIndex": 2
+          },
+          {
+            "type": "end",
+            "charIndex": 53
+          }
+        ],
+        "characters": 53,
+        "paused": false,
+        "pending": false,
+        "speaking": false
+      },
+      "cancel": {
+        "events": [
+          {
+            "name": "active",
+            "type": "error",
+            "error": "interrupted"
+          },
+          {
+            "name": "queued",
+            "type": "error",
+            "error": "canceled"
+          }
+        ],
+        "pending": false,
+        "speaking": false
+      },
+      "invalid": {
+        "error": "voice-unavailable",
+        "pending": false,
+        "speaking": false
+      },
+      "beforeNavigation": {
+        "started": true,
+        "speaking": true
+      },
+      "navigation": {
+        "newNativeHello": true,
+        "pending": false,
+        "speaking": false
+      },
+      "passed": true
+    }
+  },
+  "scope": "Final signed ARM64 APK on Android35 headless disposable emulator. x86_64 was built, aligned and signature-verified but not device-started. No physical-phone, acoustic output, every third-party plugin, or every external-provider account claim."
+}

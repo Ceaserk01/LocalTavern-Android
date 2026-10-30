@@ -1,0 +1,108 @@
+{
+  "repository": "https://github.com/Ceaserk01/LocalTavern-Android",
+  "tag": "v0.1.0-alpha.3",
+  "version": "0.1.0-alpha.3",
+  "sourceCommit": "e557b2515f7c14afa7a9f66abb3cf3edce776e1d",
+  "upstream": {
+    "repository": "https://github.com/SillyTavern/SillyTavern.git",
+    "commit": "06bde939fb1e9c4c8d8641d810f0a916b5bce127",
+    "version": "1.19.0",
+    "license": "AGPL-3.0-only"
+  },
+  "runtime": {
+    "version": "24.22.1-0",
+    "flavor": "full",
+    "prerelease": true,
+    "url": "https://github.com/fogtape/nodejs-mobile/releases/download/v24.22.1-0/nodejs-mobile-android-24.22.1-0.zip",
+    "sha256": "d6fd9f610fe5d81fede8f0d400c5a62723247725a19831835f15abf4f0604250",
+    "libraries": {
+      "arm64-v8a": {
+        "sha256": "fd0212ffe75fe0e4843642644deffc2658174a5a2bf3803fecab4e8fafec651b",
+        "size": 117282800,
+        "load_segment_alignment": [
+          16384,
+          16384,
+          16384,
+          16384
+        ]
+      },
+      "x86_64": {
+        "sha256": "dd937abf1e501eefe0f0c39ffe8b89710a2762ca69509ea385b1e7c6135881bb",
+        "size": 115709840,
+        "load_segment_alignment": [
+          16384,
+          16384,
+          16384,
+          16384
+        ]
+      }
+    }
+  },
+  "bundle": {
+    "version": "1.19.0",
+    "upstreamCommit": "06bde939fb1e9c4c8d8641d810f0a916b5bce127",
+    "sha256": "b086e504396d8f89da42d938f17e7b05a64c5f2f25c0e4bd09c4f11f0464fb6d",
+    "patches": {
+      "adapter": "isomorphic-git",
+      "changes": [
+        {
+          "file": "src/endpoints/extensions.js",
+          "occurrences": 1
+        },
+        {
+          "file": "src/endpoints/extensions.js",
+          "occurrences": 1
+        },
+        {
+          "file": "src/plugin-loader.js",
+          "occurrences": 1
+        },
+        {
+          "file": "src/plugin-loader.js",
+          "occurrences": 1
+        },
+        {
+          "file": "src/plugin-loader.js",
+          "occurrences": 1
+        },
+        {
+          "file": "plugins.js",
+          "occurrences": 1
+        },
+        {
+          "file": "public/scripts/extensions/tts/system.js",
+          "occurrences": 1
+        },
+        {
+          "file": "public/scripts/extensions/tts/system.js",
+          "occurrences": 1
+        },
+        {
+          "file": "public/scripts/extensions/tts/system.js",
+          "occurrences": 1
+        },
+        {
+          "file": "public/script.js",
+          "occurrences": 1
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "name": "LocalTavern-0.1.0-alpha.3-arm64.apk",
+      "bytes": 231491636,
+      "sha256": "97ff4b3a292829b8047cec129d648db5312c581da43684006ea204df694ba43f"
+    },
+    {
+      "name": "LocalTavern-0.1.0-alpha.3-x86_64.apk",
+      "bytes": 233605299,
+      "sha256": "b53edfc7fe52c77de2ae3d8b85d3a0690c19ff64a33f0f69bdebacb65c19510c"
+    },
+    {
+      "name": "LocalTavern-0.1.0-alpha.3-source.tar.gz",
+      "bytes": 38549504,
+      "sha256": "1edea9d8a7433347a521d2d7ab274caf938a9287959612bff3f7a8c4962087d7"
+    }
+  ]
+}

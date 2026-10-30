@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Ceaserk01, OU=LocalTavern Android
+Signer #1 certificate SHA-256 digest: d2b4fe538d483bdea3bc80653f7d0e5fefa806ccd90dac63728a6f7574c3bfbe
+Signer #1 certificate SHA-1 digest: 5c1de9a2125b20f4f9c5d992ab5163b19d504ff6
+Signer #1 certificate MD5 digest: b73f7aea7150bc3b0136996f6955523f
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: a8bbb780c2655933b4050b401de68d6b91d0e54e6c74d454ce025dcd8b0b4a68
+Signer #1 public key SHA-1 digest: 6d912b57e0ad31fba1b2d1f48b3978160a681cfa
+Signer #1 public key MD5 digest: defd292cb6a13a94cc08de83e5447e4f

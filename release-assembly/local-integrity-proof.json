@@ -1,0 +1,12 @@
+{
+  "wrongBaseDigestRejectedWithoutOutput": true,
+  "wrongPatchDigestRejectedWithoutOutput": true,
+  "wrongTargetDigestRejectedWithoutOutput": true,
+  "existingDestinationUnchanged": true,
+  "outOfBoundsCopyRejectsAndRemovesPartialOutput": true,
+  "postWriteDigestMismatchRemovesPartialOutput": true,
+  "preflightCommitSourceAcceptedNoWrites": true,
+  "preflightTagSourceAcceptedNoWrites": true,
+  "wrongSourceCommitRejectedNoWrites": true,
+  "authenticatedRedirectRejected": true
+}

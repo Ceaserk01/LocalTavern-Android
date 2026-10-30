@@ -1,0 +1,7 @@
+97ff4b3a292829b8047cec129d648db5312c581da43684006ea204df694ba43f  LocalTavern-0.1.0-alpha.3-arm64.apk
+b53edfc7fe52c77de2ae3d8b85d3a0690c19ff64a33f0f69bdebacb65c19510c  LocalTavern-0.1.0-alpha.3-x86_64.apk
+1edea9d8a7433347a521d2d7ab274caf938a9287959612bff3f7a8c4962087d7  LocalTavern-0.1.0-alpha.3-source.tar.gz
+dd80eb6f1c54715f7f493a6e0c42446b448f479ab76b34c4e6c6b91e8033eec3  LocalTavern-0.1.0-alpha.3-manifest.json
+770b6705f0d2023c63f6dd23d90983a0e6109f6cd4bb799f50b2ec0b92f66123  signature-arm64.txt
+770b6705f0d2023c63f6dd23d90983a0e6109f6cd4bb799f50b2ec0b92f66123  signature-x86_64.txt
+0840f4dcb29718322f7f6cdac4bf5134ede41761797a1c077da14e841ca08433  LocalTavern-0.1.0-alpha.3-validation.json
