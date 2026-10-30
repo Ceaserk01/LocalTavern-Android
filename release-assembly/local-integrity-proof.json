@@ -8,5 +8,7 @@
   "preflightCommitSourceAcceptedNoWrites": true,
   "preflightTagSourceAcceptedNoWrites": true,
   "wrongSourceCommitRejectedNoWrites": true,
-  "authenticatedRedirectRejected": true
+  "authenticatedRedirectRejected": true,
+  "existingTagWithObservedMainTargetAcceptedNoWrites": true,
+  "wrongSourceStillRejectedWithMainTarget": true
 }

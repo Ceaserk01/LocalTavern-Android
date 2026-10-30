@@ -14,6 +14,8 @@ ARM upload is deferred by default even when the API lists no ARM asset: a browse
 
 Tag resolution supports lightweight and annotated tags with a bounded, cycle-checked peel. A draft tag-name mismatch emits only bounded tag/source metadata and fails before writes; it must be investigated rather than silently retagged. The final report distinguishes successful partial staging from all eight files being verified. Publication remains a separate owner action.
 
+The first authenticated preflight confirmed this draft uses `v0.1.0-alpha.3`, which resolves to the frozen source, while its unused `target_commitish` retains GitHub's default `main`. GitHub ignores that field for an existing tag. The helper accepts this observed default and continues to require the exact existing tag and resolved source commit before every upload.
+
 Primary GitHub references checked 2026-10-30:
 
 - [Release asset API](https://docs.github.com/en/rest/releases/assets): the release-specific upload URL, binary body, Content-Length, upload response and server digest; failed uploads may leave a `starter` asset. This helper deliberately leaves such assets untouched.

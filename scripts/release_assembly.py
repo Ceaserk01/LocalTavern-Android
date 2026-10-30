@@ -73,7 +73,10 @@ class Publisher:
   require(release.get('tag_name') in ALLOWED_RELEASE_TAGS,'DRAFT_TAG_MISMATCH_NO_WRITES')
   require('0.1.0-alpha.3' in str(release.get('name','')),'DRAFT_TITLE_MISMATCH')
   target=release.get('target_commitish')
-  if target==SOURCE or target==TAG:pass
+  # GitHub ignores target_commitish when the selected tag already exists.
+  # This draft retains the observed default "main"; the resolved tag above,
+  # rather than that unused default, pins the APK source to SOURCE.
+  if target in (SOURCE,TAG,'main'):pass
   elif target=='codex/compatibility-performance':
    branch=self.api('/repos/'+REPO+'/git/ref/heads/codex/compatibility-performance')
    require(branch.get('object',{}).get('type')=='commit' and branch['object']['sha']==SOURCE,'DRAFT_SOURCE_BRANCH_CHANGED')
