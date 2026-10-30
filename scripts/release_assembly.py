@@ -175,5 +175,17 @@ def main():
  except Failure as error:report['operationSucceeded']=False;report['errorCode']=str(error)
  except Exception:report['operationSucceeded']=False;report['errorCode']='UNEXPECTED_INFRASTRUCTURE_FAILURE'
  (WORK/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+ if args.publish and os.environ.get('GITHUB_ACTIONS')=='true' and os.environ.get('GITHUB_STEP_SUMMARY'):
+  rows=['# Frozen alpha.3 attachment verification','',f'Source: `{SOURCE}`',
+        f'Ready for owner publication: **{report.get("readyForOwnerPublication",False)}**',
+        f'Published by this job: **{report["publishedByThisJob"]}**','',
+        '| File | State | Verified SHA-256 |','| --- | --- | --- |']
+  for item in report.get('finalAssets',[]):
+   name=item['name'];status=item['status']
+   if name not in ASSETS:continue
+   sha=ASSETS[name][1] if status=='verified-existing' else '-'
+   rows.append(f'| `{name}` | {status} | `{sha}` |')
+  if report.get('errorCode'):rows+=['',f'Preflight stopped: `{report["errorCode"]}`']
+  Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(rows)+'\n')
  return 0 if report['operationSucceeded'] else 1
 if __name__=='__main__':sys.exit(main())
