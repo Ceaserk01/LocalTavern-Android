@@ -63,6 +63,8 @@ TAVERN_BENCH_ADB_SERIAL=emulator-5554 npm run test:ui-generation
 
 驱动调用上游实际 Generate 流程，核对流式 DOM 更新与最终聊天保存。它仅接受测试模拟器，原设置和草稿保留在页面内存中，阻止测试期间的全局设置落盘，并向本地模拟 API 发送固定的假凭据；不连接付费模型。它会临时切换测试角色，因此应在专用、可丢弃的模拟器运行。
 
+官方酒馆助手兼容性测试单独运行 `node scripts/smoke_tavern_helper.mjs`，不会调用模型或剪贴板。它需要 Node.js 22、固定版本的插件检出目录、专用有 root 权限的模拟器、显式可丢弃标识及本应用 PID 对应的 WebView 开发者 socket。实际执行 Git 安装、iframe／脚本桥接和聊天变量保存，然后删除自己安装的扩展、测试资料及转发并重载恢复原页面。固定提交、检出命令、网络要求及参数见[酒馆助手验证说明](compatibility/TAVERN_HELPER.md)。
+
 原生焦点、按键、剪贴板的独立测试使用测试专用 Instrumentation APK；只编译时运行 `./scripts/test_android_interaction.sh --build-only`。显式运行还需上文的模拟器标识，以及下文与目标 APK 相同的四个签名环境变量：
 
 ```sh

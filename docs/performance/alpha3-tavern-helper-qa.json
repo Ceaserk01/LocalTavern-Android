@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "fixture": "lthelper_30a6b36a218a43fc",
+  "completed": true,
+  "startedAt": "2026-10-30T08:24:46.751Z",
+  "scope": "Actual official TavernHelper Git install and unmodified distJS inside signed Android APK; helper globals, srcdoc/blob HTML message frames, helper script iframe APIs and Slash/variable bridge. Disposable rooted emulator only; no paid model API, host clipboard, or physical-phone claim.",
+  "driver": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "workload": {
+    "officialPlugin": true,
+    "messageIframe": true,
+    "scriptIframe": true,
+    "noModelApi": true
+  },
+  "measurements": {},
+  "cleanup": {
+    "pageRestored": true,
+    "characterDeleted": true,
+    "backupsDeleted": 2,
+    "forwardsRemoved": 2,
+    "errors": [],
+    "page": {
+      "restored": true,
+      "settingsWritesBlocked": 0,
+      "ownedChatSaveWrites": 2,
+      "msSinceLastOwnedChatSave": 271.69999999995343
+    },
+    "charactersDeleted": 1,
+    "groupsDeleted": 0,
+    "noOwnedFixturesRemain": true,
+    "officialExtensionRemoved": true,
+    "afterReload": {
+      "draftRestored": true,
+      "helperGlobalRemoved": true,
+      "helperUiRemoved": true,
+      "helperFramesRemoved": true
+    },
+    "persistedSettingsByteExact": true
+  },
+  "target": {
+    "packageName": "app.local.tavern",
+    "serial": "emulator-5554",
+    "mainPid": 3251,
+    "apiLevel": "35",
+    "abi": "arm64-v8a",
+    "emulator": true,
+    "debuggerSocket": "localabstract:webview_devtools_remote_3251",
+    "origin": "http://127.0.0.1:18766",
+    "apk": [
+      "versionCode=4 minSdk=26 targetSdk=35",
+      "versionName=0.1.0-alpha.3"
+    ]
+  },
+  "preflight": {
+    "captured": true,
+    "appReady": true,
+    "settingsKeptInPageMemoryOnly": true
+  },
+  "plugin": {
+    "source": "https://github.com/N0VI028/JS-Slash-Runner",
+    "extensionName": "JS-Slash-Runner",
+    "version": "4.11.3",
+    "currentCommitHash": "ecd74c73518f6607387bed95a966fc1e2b8057c7",
+    "currentBranchName": "main",
+    "distSha256": "73cd44e6f44634642777edacbd358146d173c14abfec6aece73e4d8517e449cb"
+  },
+  "initialization": {
+    "helperGlobal": true,
+    "pluginVersion": "4.11.3",
+    "upstreamVersion": "1.19.0",
+    "vueMounted": true,
+    "tauriAbsent": true
+  },
+  "messageSrcdoc": {
+    "apiAvailable": true,
+    "contextMatches": true,
+    "variableRoundtrip": true,
+    "slashMatches": true,
+    "eventRoundtrip": true,
+    "iframeNameMatches": true,
+    "originKind": "srcdoc",
+    "buttonActivated": true
+  },
+  "messageBlob": {
+    "apiAvailable": true,
+    "contextMatches": true,
+    "variableRoundtrip": true,
+    "slashMatches": true,
+    "eventRoundtrip": true,
+    "iframeNameMatches": true,
+    "originKind": "blob"
+  },
+  "scriptIframe": {
+    "slashMatches": true,
+    "scriptVariableRoundtrip": true,
+    "scriptIdMatches": true,
+    "contextMatches": true
+  },
+  "persistedChatVariable": true,
+  "finishedAt": "2026-10-30T08:25:25.500Z"
+}

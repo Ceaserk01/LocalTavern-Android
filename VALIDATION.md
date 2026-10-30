@@ -14,6 +14,7 @@
 - 加入剪贴板和深度优化后的签名候选再次通过完整核心后端、WASM、模拟模型 API 与 SSE 测试。[本版记录](docs/performance/alpha3-signed-smoke.json)。
 - 最终候选实际 WebView 的上游 Generate → 模拟模型 SSE → 逐步 DOM 更新 → 聊天保存完整链路通过；单聊一次请求、列表策略两人群聊两次请求，最终回复、成员顺序及 JSONL 一致，发送状态恢复。实际 QuickReply 类的宏展开和斜杠命令执行通过，快捷回复本身不落盘；这是内存执行测试，不声称已验证全部自动执行触发器。驱动核对前端实际发送的模型配置，随后仅替换测试 secret_id；模拟 API 只接受假凭据。原页面、草稿、内存设置均恢复，全局设置文件逐字节不变，独立角色、群聊、备份和转发已删除。[完整链路记录](docs/performance/alpha3-generation-qa.json)。
 - 设备内测试 APK 的 SHA-256 与本机签名候选完全相同，避免只凭相同版本号推断测试了相同代码。[安装产物记录](docs/performance/alpha3-installed-artifact.json)。
+- 官方酒馆助手 4.11.3（提交 `ecd74c73518f6607387bed95a966fc1e2b8057c7`）通过实际 Git 接口安装，签名 alpha.3 内加载的未修改 `dist/index.js` SHA-256 为 `73cd44e6f44634642777edacbd358146d173c14abfec6aece73e4d8517e449cb`。助手全局 API 与 Vue 界面初始化；srcdoc／Blob 消息 iframe 的上下文、聊天变量、事件和 `/pass` 桥接，以及脚本 iframe 的脚本变量、脚本 ID 和上下文通过。聊天变量已在保存的数据中核对。srcdoc 按钮回调使用脚本 `.click()`，不是真实触摸测试。结束后删除测试角色、备份、助手扩展和转发，重载后助手 UI／全局对象／iframe 消失，原草稿恢复且设置文件逐字节不变。[原始报告](docs/performance/alpha3-tavern-helper-qa.json)、[复现与范围](docs/compatibility/TAVERN_HELPER.md)。测试未调用模型或剪贴板，不证明全部自定义脚本、离线远程资源或实体手机性能。
 
 ## alpha.2 修复复验
 
@@ -65,6 +66,7 @@
 - `node scripts/smoke_server.mjs`：桌面实际后端测试。
 - `npm run test:features`：主机实际后端的群聊、预设、快捷回复、主题、二进制附件、头像与立绘补充测试；可通过 `TAVERN_TEST_URL` 指定实际安卓后端。
 - `TAVERN_UI_TEST_DISPOSABLE=1 TAVERN_BENCH_ADB_SERIAL=emulator-5554 npm run test:ui-generation`：专用模拟器内的实际前端单聊／群聊流式生成、保存和快捷回复执行；细节见构建文档。
+- `node scripts/smoke_tavern_helper.mjs`：官方酒馆助手在专用有 root 权限的模拟器内的兼容测试；先按[复现说明](docs/compatibility/TAVERN_HELPER.md)准备固定插件检出目录和显式测试参数，不连接模型或剪贴板。
 - `adb forward tcp:18768 tcp:18766` 后，`TAVERN_TEST_URL=http://127.0.0.1:18768 TAVERN_TEST_API_HOST=10.0.2.2 node scripts/smoke_server.mjs`：安卓实际后端与模拟模型 API。
 - 同样转发后 `node scripts/smoke_extensions.mjs`：安卓扩展接口测试。
 - `node scripts/prepare_bundle.mjs --verify-source`：检查固定上游来源；源码发行包可在没有 `.git` 时验证逐文件摘要。
