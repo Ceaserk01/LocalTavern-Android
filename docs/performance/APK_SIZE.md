@@ -38,7 +38,7 @@ Android 35 ARM64 模拟器从公开 alpha.3 覆盖安装成功，数据标记保
 
 该模拟器测得 APK + 已分配原生库合计约 201,758,805 字节，alpha.3 为 231,508,020 字节，减少约 29.75 MB。运行树磁盘块占用前后均约 498 MiB，文件内容仍为 356.7 MB；这部分没有因压缩分发包而缩小。用户数据及缓存另计。首次升级到 HTTP 就绪观察值约 11.6 秒，复用资源的完整进程重启约 4.1 秒；保留 OS／APK 缓存，未做受控前后对照，均不能当作小米 15、前端呈现或 FPS 承诺。
 
-原始摘要见 [alpha.4 验证报告](alpha4-packaging-qa.json)。固定源码的主分支与标签 CI 均通过（[标签构建](https://github.com/Ceaserk01/LocalTavern-Android/actions/runs/41160157972)、[主分支构建](https://github.com/Ceaserk01/LocalTavern-Android/actions/runs/41160157698)）。
+原始摘要见 [alpha.4 验证报告](alpha4-packaging-qa.json)。固定源码的主分支与标签 CI 均通过（[标签构建](https://github.com/Ceaserk01/LocalTavern-Android/actions/runs/41160157698)、[主分支构建](https://github.com/Ceaserk01/LocalTavern-Android/actions/runs/41160157972)）。
 
 ## 验证范围
 
