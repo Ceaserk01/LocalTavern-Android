@@ -1,4 +1,4 @@
-本地酒馆 / Local Tavern Android 0.1.0-alpha.3
+本地酒馆 / Local Tavern Android 0.1.0-alpha.4
 
 Independent Android packaging of SillyTavern. This is not an official SillyTavern release.
 
@@ -14,8 +14,14 @@ Third-party mobile build, upstream Node.js 24.22.1; marked prerelease by its dis
 Node.js and bundled components: see Node-LICENSE.txt.
 
 SillyTavern's npm dependencies, their source, license and notices are included in
-the application's tavern.zip asset. Their versions are pinned in package-lock.json.
+the application's tavern.zip.zst asset. Their versions are pinned in package-lock.json.
 No tokenizer, image codec or model backend has been replaced by a stub.
+
+Zstandard 1.5.7
+https://github.com/facebook/zstd/releases/tag/v1.5.7
+The runtime asset uses lossless solid compression. Only the small C decoder is
+linked into the APK. License: BSD-3-Clause (see Zstd-LICENSE.txt).
+Verified source and build recipe: scripts/prepare_codec.py.
 
 Corresponding source is distributed alongside this APK. Rebuild instructions are
 in README.md, runtime provenance in scripts/prepare_runtime.py and upstream.lock.json.

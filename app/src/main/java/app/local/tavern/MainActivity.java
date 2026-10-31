@@ -406,8 +406,8 @@ public final class MainActivity extends Activity {
         });
     }
     private void showLicenses() {
-        String[] names={"开源组件说明","SillyTavern · AGPL-3.0","Node.js 运行时许可"};
-        String[] assets={"NOTICE.txt","SillyTavern-LICENSE.txt","Node-LICENSE.txt"};
+        String[] names={"开源组件说明","SillyTavern · AGPL-3.0","Node.js 运行时许可","Zstandard · BSD-3-Clause"};
+        String[] assets={"NOTICE.txt","SillyTavern-LICENSE.txt","Node-LICENSE.txt","Zstd-LICENSE.txt"};
         new AlertDialog.Builder(this).setTitle("开源许可").setItems(names,(d,which)->io.execute(()->{
             String value;
             try {value=new String(BundleInstaller.readAll(getAssets().open(assets[which])),StandardCharsets.UTF_8);}

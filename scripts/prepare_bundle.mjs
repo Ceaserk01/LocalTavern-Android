@@ -89,9 +89,15 @@ await fs.rm(path.join(stage, 'dist'), { recursive: true, force: true });
 await fs.rm(path.join(stage, 'plugins'), { recursive: true, force: true });
 await fs.rm(path.join(stage, 'public/scripts/extensions/third-party'), { recursive: true, force: true });
 await fs.mkdir(assets, { recursive: true });
-const bundle = path.join(assets, 'tavern.zip');
-execFileSync('python3', [path.join(project, 'scripts/zip_bundle.py'), stage, bundle], { stdio: 'inherit' });
+const bundle = path.join(assets, 'tavern.zip.zst');
+// Build the pinned compressor from source; a system-installed CLI must not
+// silently change distributed bundle bytes or decoder requirements.
+const codecCli = execFileSync('python3', [path.join(project, 'scripts/prepare_codec.py'), '--print-cli'], { encoding: 'utf8' }).trim();
+execFileSync('python3', [path.join(project, 'scripts/zip_bundle.py'), stage, bundle, '--zstd', codecCli], { stdio: 'inherit' });
+// Never ship the obsolete 135 MB asset alongside the replacement.
+await fs.rm(path.join(assets, 'tavern.zip'), { force: true });
 const sha256 = crypto.createHash('sha256').update(await fs.readFile(bundle)).digest('hex');
-const manifest = { version: lock.version, upstreamCommit: commit, sha256, patches };
+const codec = JSON.parse(await fs.readFile(path.join(project, 'app/libzstd/codec.json'), 'utf8'));
+const manifest = { version: lock.version, upstreamCommit: commit, format: 'zip+zstd', codec, sha256, patches };
 await fs.writeFile(path.join(assets, 'bundle-manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(JSON.stringify(manifest, null, 2));

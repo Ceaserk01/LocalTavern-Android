@@ -13,8 +13,8 @@ version = json.loads((root / 'release.json').read_text())['version']
 output = root / f'dist/LocalTavern-{version}-source.tar.gz'
 output.parent.mkdir(exist_ok=True)
 excluded = {'.git', '.cache', '.tooling', '.signing', '.gradle', '.cxx', 'build', 'dist', 'node_modules', '.idea', '__pycache__'}
-generated = {'app/libnode', 'app/src/main/jniLibs', 'upstream', 'local.properties',
-             'app/src/main/assets/tavern.zip', 'app/src/main/assets/bundle-manifest.json'}
+generated = {'app/libnode', 'app/libzstd', 'app/src/main/jniLibs', 'upstream', 'local.properties',
+             'app/src/main/assets/tavern.zip', 'app/src/main/assets/tavern.zip.zst', 'app/src/main/assets/bundle-manifest.json'}
 def publishable(rel):
     file = Path(rel)
     return not (any(part in excluded for part in file.parts) or rel in generated

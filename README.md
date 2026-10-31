@@ -6,11 +6,11 @@
 
 **[下载签名 APK / Releases](https://github.com/Ceaserk01/LocalTavern-Android/releases)** · [构建与发布](docs/BUILDING.md) · [验证记录](VALIDATION.md) · [上游 Fork](https://github.com/Ceaserk01/SillyTavern)
 
-当前发行版：**0.1.0-alpha.3**，供试用和兼容性反馈。仓库保留 Android 适配层，上游源码按固定提交获取；Release 的完整源码附件额外包含对应上游快照。
+当前发行版：**0.1.0-alpha.4**，供试用和兼容性反馈。仓库保留 Android 适配层，上游源码按固定提交获取；Release 的完整源码附件额外包含对应上游快照。
 
 ## 安装与使用
 
-1. 从 Releases 下载并安装 `LocalTavern-0.1.0-alpha.3-arm64.apk`，适合 Android 8.0 及以上的主流 ARM64 手机。x86_64 包用于对应模拟器和设备。
+1. 从 Releases 下载并安装 `LocalTavern-0.1.0-alpha.4-arm64.apk`，适合 Android 8.0 及以上的主流 ARM64 手机。x86_64 包用于对应模拟器和设备。
 2. 打开「本地酒馆」，等待第一次校验和解包。之后直接复用已经解包的资源。
 3. 在酒馆原有的 API 连接面板选择服务，填写地址和 API Key，选择模型后聊天。电脑上的模型服务需填电脑的局域网 IP；手机内的 `127.0.0.1` 指手机自身。
 4. 通过原酒馆界面导入角色卡、世界书、聊天和预设。顶部 ☰ 提供扩展 ZIP 导入、备份恢复、日志和服务重启。
@@ -41,6 +41,12 @@
 
 本地服务仅绑定 `127.0.0.1:18766`，保留 CSRF 防护。常驻通知提供返回和停止入口；Android 的省电策略仍可能结束后台进程；回到仍存活的 App 页面时会检测并恢复本地服务，保留当前页面和未发送草稿。系统文件选择器处理导入和保存，麦克风仅在使用相关功能时申请权限。
 
+## 安装包体积
+
+alpha.4 重构资源打包：所有运行文件先按相同内容相邻排列，写入无单文件压缩的 ZIP，再整体以固定版本 Zstandard 压缩。安装时由独立的小型 C 解码器流式解压，继续使用原有 ZIP 路径、CRC 和大小限制；完整酒馆、Node/V8、WASM、默认素材及插件依赖均保留，首次启动无需下载补充组件。
+
+原生运行库改由 Android 安装器解压到系统管理的目录，减少 APK 下载体积；安装后会多出解压后的库副本。因此 APK 减少量不能直接当作手机存储减少量，运行内存也不会按相同比例下降。方法与测量见[体积记录](docs/performance/APK_SIZE.md)。
+
 ## 性能实现
 
 - 保留原 Node/V8 执行路径和系统 WebView 硬件加速，避免为了语言重写破坏扩展接口。
@@ -65,7 +71,7 @@
 
 ## 构建
 
-需要 JDK 17、Android SDK Platform 35 / Build Tools 35.0.0、NDK 27.2.12479018、CMake 3.22.1、Node.js 20 以上、npm、Python 3、Git。Gradle Wrapper 固定 8.11.1 并校验发行包 SHA-256。可使用 Android Studio 安装 SDK 组件。
+需要 JDK 17、Android SDK Platform 35 / Build Tools 35.0.0、NDK 27.2.12479018、CMake 3.22.1、Node.js 20 以上、npm、Python 3、Git、make 和 C 编译器。Gradle Wrapper 固定 8.11.1 并校验发行包 SHA-256。可使用 Android Studio 安装 SDK 组件。
 
 ```sh
 python3 scripts/prepare_runtime.py
@@ -81,6 +87,9 @@ node scripts/prepare_bundle.mjs
 
 ```sh
 npm test
+python3 scripts/test_bundle_codec.py
+python3 scripts/test_bundle_roundtrip.py
+node scripts/smoke_wasm.mjs
 ./scripts/test_archive.sh
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh
@@ -97,7 +106,7 @@ Git 测试使用真实本地 smart HTTP 仓库，覆盖安装、更新、版本�
 
 ## 许可与来源
 
-本项目及 SillyTavern 按 AGPL-3.0 提供，见 `LICENSE`。APK 的开源许可菜单包含 SillyTavern 和 Node.js 完整许可，npm 依赖保留各自源码和许可文件。分发 APK 时一并提供对应源码及构建步骤。
+本项目及 SillyTavern 按 AGPL-3.0 提供，见 `LICENSE`。APK 的开源许可菜单包含 SillyTavern、Node.js 和 Zstandard 完整许可，npm 依赖保留各自源码和许可文件。分发 APK 时一并提供对应源码及构建步骤。
 
 - [SillyTavern](https://github.com/SillyTavern/SillyTavern)
 - [Node mobile 固定运行时](https://github.com/fogtape/nodejs-mobile/releases/tag/v24.22.1-0)

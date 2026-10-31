@@ -22,6 +22,7 @@ final class BundleInstaller {
         }
         String expected = manifest.getString("sha256").toLowerCase(Locale.ROOT);
         if (!expected.matches("[a-f0-9]{64}")) throw new IOException("安装包校验信息无效");
+        if (!"zip+zstd".equals(manifest.getString("format"))) throw new IOException("不支持的资源包格式");
         File parent = new File(context.getFilesDir(), "runtime");
         File target = new File(parent, expected);
         logCleanup(RuntimeStorage.prepare(parent, context.getCacheDir()));
@@ -31,17 +32,22 @@ final class BundleInstaller {
         }
         parent.mkdirs();
         File stage = new File(parent, ".install-" + UUID.randomUUID());
-        File archive = File.createTempFile("tavern-", ".zip", context.getCacheDir());
+        File archive = File.createTempFile("tavern-", ".zip.zst", context.getCacheDir());
         try {
             MessageDigest sha = MessageDigest.getInstance("SHA-256");
-            try (InputStream in = context.getAssets().open("tavern.zip"); OutputStream out = new FileOutputStream(archive)) {
+            try (InputStream in = context.getAssets().open("tavern.zip.zst"); OutputStream out = new FileOutputStream(archive)) {
                 byte[] buffer = new byte[64 * 1024]; int n;
                 while ((n = in.read(buffer)) != -1) { sha.update(buffer, 0, n); out.write(buffer, 0, n); }
             }
             StringBuilder actual = new StringBuilder();
             for (byte b : sha.digest()) actual.append(String.format(Locale.ROOT, "%02x", b & 255));
             if (!expected.equals(actual.toString())) throw new IOException("安装包校验失败，请重新下载安装 APK");
-            unzip(new FileInputStream(archive), stage);
+            try (BundleZstdInputStream decoded = new BundleZstdInputStream(archive)) {
+                // SafeZip owns and closes its input. Keep the decoder open so
+                // the central directory and Zstd footer are checked as well.
+                unzip(new FilterInputStream(decoded) { @Override public void close() {} }, stage);
+                decoded.verifyEnd();
+            }
             if (!new File(stage, "android-entry.mjs").isFile() || !new File(stage, "server.js").isFile())
                 throw new IOException("安装包缺少启动文件");
             Files.write(new File(stage, ".ready").toPath(), expected.getBytes(StandardCharsets.UTF_8));

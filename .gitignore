@@ -16,8 +16,10 @@
 upstream/
 local.properties
 app/libnode/
+app/libzstd/
 app/src/main/jniLibs/
 app/src/main/assets/tavern.zip
+app/src/main/assets/tavern.zip.zst
 app/src/main/assets/bundle-manifest.json
 dist/
 .DS_Store

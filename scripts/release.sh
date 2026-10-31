@@ -30,7 +30,11 @@ if [[ "${1:-}" != "--skip-prepare" ]]; then
 fi
 cp app/libnode/LICENSE app/src/main/assets/Node-LICENSE.txt
 cp LICENSE app/src/main/assets/SillyTavern-LICENSE.txt
+cp app/libzstd/LICENSE app/src/main/assets/Zstd-LICENSE.txt
 npm test
+python3 scripts/test_bundle_codec.py
+python3 scripts/test_bundle_roundtrip.py
+node scripts/smoke_wasm.mjs
 ./scripts/test_archive.sh
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh

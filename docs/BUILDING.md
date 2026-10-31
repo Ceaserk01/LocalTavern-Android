@@ -14,7 +14,7 @@
 | Android NDK | 27.2.12479018 |
 | CMake | 3.22.1 |
 
-还需 Git、curl 和可访问依赖服务器的网络。设置 `JAVA_HOME`、`ANDROID_HOME`。可通过 Android Studio 的 SDK Manager 安装上述安卓组件；Linux 命令行也可使用：
+还需 Git、curl、make、C 编译器及可访问依赖服务器的网络。设置 `JAVA_HOME`、`ANDROID_HOME`。可通过 Android Studio 的 SDK Manager 安装上述安卓组件；Linux 命令行也可使用：
 
 ```sh
 sdkmanager 'platforms;android-35' 'build-tools;35.0.0' \
@@ -29,6 +29,9 @@ sdkmanager 'platforms;android-35' 'build-tools;35.0.0' \
 python3 scripts/prepare_runtime.py
 node scripts/prepare_bundle.mjs
 npm test
+python3 scripts/test_bundle_codec.py
+python3 scripts/test_bundle_roundtrip.py
+node scripts/smoke_wasm.mjs
 ./scripts/test_archive.sh
 ./scripts/test_runtime_storage.sh
 ./scripts/test_backup.sh
@@ -38,6 +41,10 @@ npm run test:features
 ```
 
 准备步骤检查固定的源码提交、运行时摘要、ABI 与 16 KB 页面对齐；使用上游 `package-lock.json` 执行 `npm ci`，在临时目录应用补丁并预编译前端。ZIP 安全测试实际流式生成和拒绝 512 MiB + 1 字节输入，需预留临时磁盘空间。
+
+`prepare_bundle` 自动调用 `scripts/prepare_codec.py`，下载并校验固定 Zstandard 1.5.7 源码，构建本机构建用压缩器，并准备 Android 解码器源码。手机仅包含独立的 C 解码库，不带压缩器；解码窗口限制为 32 MiB。资源为单个 `tavern.zip.zst`，里面保留完整的 STORE ZIP 及全部原路径。不能直接将不可 seek 的 ZIP 输出流接到压缩器：Java `ZipInputStream` 不接受带数据描述符的 STORE 条目。
+
+`test_bundle_roundtrip.py` 流式解码并逐文件核对路径、字节数与 SHA-256；`test_bundle_codec.py` 在主机编译实际 JNI 解码代码，验证截断、校验和、尾随数据、窗口限制、关闭和资源释放。`smoke_wasm.mjs` 离线运行真实 ONNX SIMD／scalar 推理及 tiktoken，避免只验证包能打开。上述主机测试不替代实际 APK 安装与启动验证。
 
 `build.sh` 生成开发调试签名的 APK，用于本地测试。正式分发使用下面的发布步骤。重新准备时，原上游检出目录中的已跟踪文件必须与固定提交一致；修改适配层应放在 `runtime/`，避免将本机改动偷偷混入发行资源。
 

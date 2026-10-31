@@ -17,6 +17,7 @@ if [[ "${1:-}" != "--skip-prepare" ]]; then
 fi
 cp app/libnode/LICENSE app/src/main/assets/Node-LICENSE.txt
 cp LICENSE app/src/main/assets/SillyTavern-LICENSE.txt
+cp app/libzstd/LICENSE app/src/main/assets/Zstd-LICENSE.txt
 if [[ -x .tooling/gradle-8.11.1/bin/gradle ]]; then
   task_gradle=.tooling/gradle-8.11.1/bin/gradle
 else

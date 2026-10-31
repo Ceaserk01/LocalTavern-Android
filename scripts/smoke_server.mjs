@@ -1,6 +1,7 @@
 // Exercise the actual packaged server and WASM dependencies, without paid APIs.
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import { constants as fsConstants } from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
 import { spawn } from 'node:child_process';
@@ -9,14 +10,17 @@ import { fileURLToPath } from 'node:url';
 
 const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const external = process.env.TAVERN_TEST_URL;
-const root = path.join(project, '.cache/bundle');
+const bundle = path.resolve(process.env.TAVERN_BUNDLE_ROOT || path.join(project, '.cache/bundle'));
 const temporary = await fs.mkdtemp(path.join(project, '.cache/smoke-'));
+const root = path.join(temporary, 'server');
 const data = path.join(temporary, 'userdata');
 const port = 18767;
 const base = external || `http://127.0.0.1:${port}`;
 let logs = '';
 let child;
-const start = performance.now();
+let childExit;
+let start = performance.now();
+let bundleCloneMs;
 let mockRequests = 0;
 const mock = http.createServer(async (req, res) => {
     let body = '';
@@ -59,6 +63,16 @@ async function request(endpoint, body, opts = {}) {
 }
 try {
     if (!external) {
+        // android-entry rewrites these two runtime links. Copy the actual
+        // bundle first so the prepared/extracted source stays reusable.
+        // Preserve all other symlinks verbatim instead of following targets.
+        const cloneStart = performance.now();
+        await fs.cp(bundle, root, {
+            recursive: true, dereference: false, verbatimSymlinks: true,
+            mode: fsConstants.COPYFILE_FICLONE,
+            filter: file => !['plugins', 'public/scripts/extensions/third-party'].includes(path.relative(bundle, file)),
+        });
+        bundleCloneMs = Math.round(performance.now() - cloneStart);
         const plugin = path.join(temporary, 'plugins/smoke');
         await fs.mkdir(plugin, { recursive: true });
         await fs.writeFile(path.join(plugin, 'index.mjs'), `import yaml from 'yaml';
@@ -69,7 +83,11 @@ export async function init(router) {router.get('/ping', (_req,res)=>res.json(yam
             await fs.mkdir(path.join(data, directory), { recursive: true });
             await fs.writeFile(path.join(data, directory, 'manifest.json'), JSON.stringify({ display_name: directory, loading_order: 100, requires: [], optional: [], js: '', css: '', author: 'smoke', version: '1.0.0', homePage: '' }));
         }
-        child = spawn(process.execPath, [path.join(root, 'android-entry.mjs'), '--dataRoot', data, '--port', String(port)], { cwd: root });
+        start = performance.now();
+        child = spawn(process.execPath, [path.join(root, 'android-entry.mjs'), '--dataRoot', data, '--port', String(port)], {
+            cwd: root, env: { ...process.env, TAVERN_PLUGINS_DIR: path.join(temporary, 'plugins') },
+        });
+        childExit = new Promise(resolve => child.once('close', resolve));
         child.stdout.on('data', chunk => { logs += chunk; });
         child.stderr.on('data', chunk => { logs += chunk; });
     }
@@ -131,10 +149,15 @@ export async function init(router) {router.get('/ping', (_req,res)=>res.json(yam
         assert.equal(mockRequests, 2);
     }
     console.log(JSON.stringify({ passed: true, startupMs, runtime: external ? 'embedded Node; version recorded in runtime.log' : process.version, driverRuntime: process.version, target: base,
+        ...(!external ? { bundleSourceRoot: bundle, bundleCloneMs, serverMode: 'private copy of actual prepared/extracted Android bundle' } : {}),
         checks: ['frontend', 'csrf', 'settings', 'character import/export + WASM image codec', 'worldbook', 'chat persistence', 'tiktoken WASM roundtrip', ...(!external ? ['persistent server plugin + npm dependency', 'local/global extensions'] : []), ...(runApi ? ['OpenAI-compatible API', 'SSE streaming'] : [])] }, null, 2));
 } finally {
-    if (child && child.exitCode === null) child.kill('SIGTERM');
+    if (child && child.exitCode === null) {
+        child.kill('SIGTERM');
+        const finished = await Promise.race([childExit.then(() => true), delay(5000, false, { ref: false })]);
+        if (!finished) { child.kill('SIGKILL'); await childExit; }
+    }
     mock.closeAllConnections(); mock.close();
     await fs.writeFile(path.join(project, '.cache/smoke-server.log'), logs);
-    if (!external) await fs.rm(temporary, { recursive: true, force: true });
+    await fs.rm(temporary, { recursive: true, force: true });
 }
