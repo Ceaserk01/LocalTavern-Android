@@ -1,4 +1,6 @@
-# 本地酒馆 Android 0.1.0-alpha.3
+# 本地酒馆 Android 0.1.0-alpha.4
+
+本次打包重构将 ARM64 APK 从 231,491,636 字节减为 105,490,517 字节（-54.43%），20,907 个运行文件的路径与内容完整保留。实际 Android 覆盖升级、资源完整性、API 与 SSE 验证通过，详细记录见 [体积报告](docs/performance/APK_SIZE.md)。安装后的原生库副本会占空间，运行内存不会同比减少。
 
 本次预览版：在 Android 手机内同时运行 SillyTavern 1.19.0 与 Node.js 24.22.1。安装后打开 App，配置模型 API 即可使用；无需 Termux 或自行部署后端。
 
@@ -15,15 +17,15 @@
 
 ## 下载
 
-- `LocalTavern-0.1.0-alpha.3-arm64.apk`：Android 8.0+ ARM64 手机。
-- `LocalTavern-0.1.0-alpha.3-x86_64.apk`：对应架构的设备或模拟器。
-- `LocalTavern-0.1.0-alpha.3-source.tar.gz`：安卓版源码及固定上游快照。
-- `SHA256SUMS.txt`、`LocalTavern-0.1.0-alpha.3-manifest.json`：校验和、源码提交、运行时与资源来源。
+- `LocalTavern-0.1.0-alpha.4-arm64.apk`：Android 8.0+ ARM64 手机。
+- `LocalTavern-0.1.0-alpha.4-x86_64.apk`：对应架构的设备或模拟器。
+- `LocalTavern-0.1.0-alpha.4-source.tar.gz`：安卓版源码及固定上游快照。
+- `SHA256SUMS.txt`、`LocalTavern-0.1.0-alpha.4-manifest.json`：校验和、源码提交、运行时与资源来源。
 
 Release 使用独立签名。若此前安装过开发调试包，请先在 App 中导出备份，再卸载开发包、安装此版本并恢复。相同正式签名的后续版本可以覆盖升级。
 
 ## 验证与范围
 
-已在 Android 35 ARM64 模拟器验证核心后端、真实 tokenizer、角色图像导入导出、Git 扩展管理、ZIP 扩展、文件导出与备份恢复，以及本机朗读、原生输入及剪贴板允许／拒绝、群聊／预设／附件等补充流程；详见仓库 `VALIDATION.md`。模型 API 测试使用本地模拟服务，不消耗付费账号。实体手机兼容性与大型资料库性能需要继续验证。
+alpha.3 已在 Android 35 ARM64 模拟器验证核心后端、真实 tokenizer、角色图像导入导出、Git 扩展管理、ZIP 扩展、文件导出与备份恢复，以及本机朗读、原生输入及剪贴板允许／拒绝、群聊／预设／附件等补充流程；详见仓库 `VALIDATION.md`。模型 API 测试使用本地模拟服务，不消耗付费账号。实体手机兼容性与大型资料库性能需要继续验证。
 
 系统朗读需要安装 Android TTS 引擎及声音数据；暂停恢复可能重复最近尚未报告的片段。依赖桌面程序、未提供 Android 构建的原生模块、独立 Node 子进程或额外外部服务的插件需要相应适配。额外纯 JS 依赖可随插件 ZIP 的 `node_modules` 提供。备份和恢复统一限额为解压后 2 GiB、单文件 512 MiB、200,000 项。Node 移动运行时来自第三方预发布构建，不是 Node.js 官方 Android 发行版。

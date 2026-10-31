@@ -1,0 +1,273 @@
+{
+  "version": "0.1.0-alpha.4",
+  "sourceCommit": "72d06c1b53fe5edd9043d5b4eea7f3b1e98d8605",
+  "scope": "Lossless APK distribution/installer refactor with exact signed ARM64 final APK tested on Android35 emulator. Original alpha3 runtime/frontend file bytes preserved. No Xiaomi15 performance or every-plugin claim.",
+  "apk": {
+    "passed": true,
+    "apkBytes": 105490517,
+    "oldApkBytes": 231491636,
+    "apkReductionPercent": 54.43,
+    "oldNodeAndCxxUncompressedBytesIdentical": true,
+    "onlyNewResourceAsset": true,
+    "native": [
+      {
+        "name": "lib/arm64-v8a/libc++_shared.so",
+        "uncompressedBytes": 1292904,
+        "apkBytes": 406563,
+        "compression": 8,
+        "sha256": "4397241b4bd20a8e579bfb41d21107857e12985f6a01ca0c2a5f83380d1270b4",
+        "loadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ]
+      },
+      {
+        "name": "lib/arm64-v8a/liblocal_tavern.so",
+        "uncompressedBytes": 44384,
+        "apkBytes": 20792,
+        "compression": 8,
+        "sha256": "3deab0429c06e1a4143b8790cf040ac48f5fe891b2170aa2e4478b846794e5d2",
+        "loadAlignments": [
+          16384,
+          16384,
+          16384
+        ]
+      },
+      {
+        "name": "lib/arm64-v8a/libnode.so",
+        "uncompressedBytes": 94827640,
+        "apkBytes": 33862778,
+        "compression": 8,
+        "sha256": "821406f3a709f18e631604ca99a2d0cc2fd7b8e208d179b0e201f03b2037d867",
+        "loadAlignments": [
+          16384,
+          16384,
+          16384,
+          16384
+        ]
+      },
+      {
+        "name": "lib/arm64-v8a/libtavern_bundle.so",
+        "uncompressedBytes": 66608,
+        "apkBytes": 37017,
+        "compression": 8,
+        "sha256": "fd6da4a922ca3def898fb6c87275cb3fe947559ff325b0db6f414ea2981dc14d",
+        "loadAlignments": [
+          16384,
+          16384
+        ]
+      }
+    ]
+  },
+  "roundtrip": {
+    "passed": true,
+    "scope": "Host streaming decompression and byte-for-byte bundle preservation; no Android/emulator assertion",
+    "limits": {
+      "entries": 200000,
+      "fileBytes": 536870912,
+      "totalBytes": 2147483648,
+      "zipBytes": 2281701376
+    },
+    "compressedBytes": 71057286,
+    "compressedSha256": "fabcfe8d1d8672dc9dbc0ac2367a1543e8b4734acf6e947e96af1eb5fdba6455",
+    "frame": {
+      "frames": 1,
+      "windowBytes": 33554432,
+      "contentSize": 360438923,
+      "checksum": true,
+      "blocks": 5386
+    },
+    "decoder": {
+      "version": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***",
+      "zipBytes": 360438923
+    },
+    "reference": {
+      "matched": true,
+      "inventorySha256": "cca4c02c4112385147733815d939e38992a7780c3b57fd1998a9b9306abdd344"
+    },
+    "fileCount": 20907,
+    "totalFileBytes": 356720699,
+    "inventorySha256": "cca4c02c4112385147733815d939e38992a7780c3b57fd1998a9b9306abdd344",
+    "elapsedMs": 6818
+  },
+  "hostWasm": {
+    "passed": true,
+    "scope": "Host Node, offline ONNX SIMD/scalar Identity inference and real tiktoken roundtrips; no Android/emulator assertion",
+    "driverRuntime": "v22.23.1",
+    "onnx": [
+      {
+        "mode": "simd",
+        "passed": true,
+        "numThreads": 1,
+        "output": [
+          1.25,
+          -2.5,
+          3
+        ],
+        "modelBytes": 75,
+        "wasmReads": [
+          "node_modules/sillytavern-transformers/dist/ort-wasm-simd.wasm"
+        ]
+      },
+      {
+        "mode": "scalar",
+        "passed": true,
+        "numThreads": 1,
+        "output": [
+          1.25,
+          -2.5,
+          3
+        ],
+        "modelBytes": 75,
+        "wasmReads": [
+          "node_modules/sillytavern-transformers/dist/ort-wasm.wasm"
+        ]
+      }
+    ],
+    "tiktoken": {
+      "passed": true,
+      "cases": [
+        {
+          "model": "gpt-4",
+          "passed": true,
+          "tokenCount": 15
+        },
+        {
+          "model": "gpt-4o",
+          "passed": true,
+          "tokenCount": 12
+        }
+      ],
+      "text": "中文 tokenizer 正常工作 🧪\nlocal model API"
+    },
+    "elapsedMs": 847
+  },
+  "androidUpgrade": {
+    "passed": true,
+    "scope": "Exact signed final ARM64 alpha4 APK on disposable Android35 emulator; upgrade from exact published alpha3, actual native decoder/extraction, complete source inventory and backend ready. No Xiaomi15 speed claim.",
+    "apkSha256": "68ff4a79b4a658008552f239c07e223760af9d8dc782472fea3ba0df72631fe3",
+    "apkBytes": 105490517,
+    "previousApkSha256": "97ff4b3a292829b8047cec129d648db5312c581da43684006ea204df694ba43f",
+    "deviceApi": "35",
+    "pageBytes": 4096,
+    "firstUpgradeBackendReadyMs": 11557,
+    "upgradeMarkerPreserved": true,
+    "runtimeInventory": {
+      "matchedFiles": 20907,
+      "fileContentBytes": 356720699,
+      "inventorySha256": "cca4c02c4112385147733815d939e38992a7780c3b57fd1998a9b9306abdd344",
+      "allMatchAlpha3": true
+    },
+    "nativeKiB": 94012,
+    "runtimeKiB": 510296,
+    "cacheKiB": 9560,
+    "apkPlusAllocatedNativeBytes": 201758805,
+    "previousApkPlusAllocatedNativeBytes": 231508020,
+    "apkPlusNativeSavedBytes": 29749215,
+    "existingServerReadinessCheckMs": 58
+  },
+  "androidReopen": {
+    "passed": true,
+    "scope": "Prepared-runtime full process relaunch; OS/APK caches retained; HTTP-ready is not WebView presentation or phone FPS",
+    "backendReadyMs": 4136,
+    "runtimeReadyMarkerMtimeUnchanged": true,
+    "newProcess": true
+  },
+  "androidCoreApi": {
+    "passed": true,
+    "runtime": "embedded Node; version recorded in runtime.log",
+    "driverRuntime": "v22.23.1",
+    "target": "http://127.0.0.1:18768",
+    "checks": [
+      "frontend",
+      "csrf",
+      "settings",
+      "character import/export + WASM image codec",
+      "worldbook",
+      "chat persistence",
+      "tiktoken WASM roundtrip",
+      "OpenAI-compatible API",
+      "SSE streaming"
+    ]
+  },
+  "androidFeatures": {
+    "passed": true,
+    "fixtureId": "lt-features-1793413637529-bde373146557",
+    "target": "http://127.0.0.1:18768",
+    "driverRuntime": "v22.23.1",
+    "serverMode": "external actual server; embedded runtime/version recorded separately",
+    "elapsedMs": 472,
+    "requestCount": 67,
+    "checks": [
+      {
+        "feature": "binary file attachment upload, verification and authenticated download",
+        "bytes": 65556,
+        "sha256": "552107f0805f4ebc0804350aecda249585d545abcafb68646c70eb4dc149a705"
+      },
+      {
+        "feature": "two-member group create/edit; group chat metadata, swipes, attachment, search, recents, JSONL/text export and rename",
+        "messages": 3
+      },
+      {
+        "feature": "all eight preset families preserve Unicode, macros, nested prompts and numeric settings through discovery",
+        "apiIds": [
+          "kobold",
+          "novel",
+          "openai",
+          "textgenerationwebui",
+          "instruct",
+          "context",
+          "sysprompt",
+          "reasoning"
+        ]
+      },
+      {
+        "feature": "quick-reply and theme save/discovery preserve complete preset values"
+      },
+      {
+        "feature": "persona avatar multipart upload, real image crop, discovery and authenticated PNG serving",
+        "outputPixels": [
+          1,
+          1
+        ]
+      },
+      {
+        "feature": "global settings were not written",
+        "unchangedDuringRun": true
+      }
+    ],
+    "cleanup": {
+      "attempted": 15,
+      "errors": [],
+      "residualEmptyDirectories": []
+    },
+    "skipped": [
+      "sprites: enable TAVERN_TEST_SPRITES=1 only on a disposable target and remove the reported empty QA directory afterward"
+    ],
+    "scope": "Backend persistence and file/image workflows; does not prove frontend interaction, group model generation, quick-reply execution, or every third-party plugin."
+  },
+  "androidVisibleFrontend": {
+    "checked": true,
+    "screenshotSha256": "13d0bb22beb7974fb87be2ec233788ec175d3eb45c717141aa6055892a042cad",
+    "observed": "Full upstream1.19.0 welcome/chat page and input visible; no loading or error overlay"
+  },
+  "hostReleaseGates": {
+    "nodeUnitTests": 34,
+    "safeZipChecks": 12,
+    "runtimeStorageChecks": 17,
+    "backupChecks": 14,
+    "jniDecoderChecks": 403480,
+    "buildReleaseBothAbis": true,
+    "lintRelease": true,
+    "zipAlign16KiBBothAbis": true,
+    "nonDebugReleaseSignatureBothAbis": true
+  },
+  "limitations": [
+    "Full runtime tree remains 356720699 bytes in file contents after extraction; filesystem overhead and mutable caches are additional.",
+    "Compressed native libraries add Android-managed extracted copies; download saving is126001119 bytes, APK plus allocated native saving observed29749215 bytes.",
+    "ONNX inference gate is host Node; Android gate executes real image codec and tiktoken WASMs.",
+    "TavernHelper4.11.3 functional tests were alpha3; all builtin runtime source files match in alpha4, but not every custom script or physical Xiaomi15 has been retested."
+  ]
+}

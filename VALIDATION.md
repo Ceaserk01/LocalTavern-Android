@@ -1,8 +1,12 @@
+# 构建与验证记录
+
+更新日期：2026-10-31（Asia/Shanghai）。alpha.4 的实际 APK 摘要、覆盖升级、完整文件及 API 回归见 [alpha.4 原始报告](docs/performance/alpha4-packaging-qa.json)。旧版原始报告保持原测试范围与日期。
+
 ## alpha.4 资源打包重构
 
 完整文件集保持与 alpha.3 相同：20,907 个文件、356,720,699 字节，路径及 SHA-256 清单摘要均为 `cca4c02c4112385147733815d939e38992a7780c3b57fd1998a9b9306abdd344`。资源改为单帧 Zstandard 包裹的 STORE ZIP，解包后仍为普通文件；未删默认素材、WASM 或 npm 依赖。独立 C 解码器与 Node/V8 分开加载，保留原 ZIP 检查和安装事务，并额外验证压缩帧结束。主机 JNI 异常输入、完整资源回环、真实 ONNX SIMD／scalar、tiktoken、后端 API／SSE 以及原有 ZIP、存储清理和备份测试均通过。安装包与安装空间分开测量，见[体积重构记录](docs/performance/APK_SIZE.md)。本节不把主机测试当作小米 15 实机验证。
 
-# 本次构建验证
+## alpha.3 及更早构建基线
 
 更新日期：2026-10-30（Asia/Shanghai），上游 SillyTavern 1.19.0。本页区分 alpha.3 开发候选、alpha.2 修复复验和 alpha.1 签名构建基线；各原始报告保留实际测试日期，发布状态以仓库 Releases 为准。
 
